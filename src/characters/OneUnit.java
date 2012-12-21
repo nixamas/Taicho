@@ -1,24 +1,15 @@
 package characters;
 
-import java.util.ArrayList;
-
-import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
-import basecomponents.ObjectMove;
 import enums.Player;
-import gameparts.ObjectData;
+import enums.Ranks;
 
 public class OneUnit extends MovableObject {
 	
 	public OneUnit(Player p) {
-		super(p);
-		COMBAT_VALUE = 1;
+		super(p, Ranks.LEVEL_ONE);
 	}
 
-	@Override
-	public int getCombatValue() {
-		return COMBAT_VALUE;
-	}
 
 //	@Override
 //	public ArrayList<ObjectMove> getPossibleMoves(ObjectData board, BoardComponent bc) {

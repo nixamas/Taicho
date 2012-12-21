@@ -1,5 +1,6 @@
 package gameparts;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import basecomponents.BoardComponent;
+import enums.BoardDimensions;
 import enums.Location;
 import enums.Player;
 
@@ -41,6 +43,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 								// current player.
 	Player p1, p2;
 
+	BoardDimensions boardProperties;
 //	Taicho game;
 
 	/**
@@ -51,6 +54,10 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		System.out.println("Board constructor");
 		board = null;
 		validMoves = new ArrayList<BoardComponent>();
+		boardProperties = new BoardDimensions(20);
+		int i = boardProperties.getComponentSize();
+		i = boardProperties.getBoardLength();
+		i = boardProperties.getBoardWidth();
 //		game = taicho;
 		setBackground(Color.BLACK);
 		addMouseListener(this);
@@ -65,6 +72,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		p2 = Player.PLAYER_TWO;
 		board = new ObjectData(p1, p2);
 		// doNewGame();
+		simulateMouseClick();
 	}
 
 	/**
@@ -133,9 +141,11 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 
 		/* Draw a two-pixel black border around the edges of the canvas. */
 		System.out.println("Paint components");
-		g.setColor(Color.WHITE);
-//		g.drawRect(0, 0, game.getSize().width - 1, game.getSize().height - 1);
-//		g.drawRect(1, 1, game.getSize().width - 3, game.getSize().height - 3);
+		g.setColor(Color.BLACK);
+		int compSize = boardProperties.getComponentSize();
+		int charSize = boardProperties.getCharacterDimension();
+		g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
+		g.drawRect(1, 1, getSize().width - 3, getSize().height - 3);
 
 		/* Draw the squares of the checkerboard and the checkers. */
 		for (int col = 0; col < 15; col++) {
@@ -149,17 +159,22 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 					} else {
 						g.setColor(bc.getColor());
 					}
-					g.fillRect(2 + col * 20, 2 + row * 20, 20, 20);
+//					g.fillRect(2 + col * 20, 2 + row * 20, 20, 20);
+					
+					g.fillRect(2 + col * compSize, 2 + row * compSize, compSize, compSize);
 
 					if(bc.isOccupied()){
 						if (bc.getCharacter().getPlayer() == Player.PLAYER_ONE) {
 							g.setColor(bc.getCharacter().getColor());
-							g.fillOval(4 + col * 20, 4 + row * 20, 15, 15);
+							g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
 						} else if (bc.getCharacter().getPlayer() == Player.PLAYER_TWO) {
 							g.setColor(bc.getCharacter().getColor());
-							g.fillOval(4 + col * 20, 4 + row * 20, 15, 15);
+							g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
 						}
 					}
+				}else{
+					g.setColor(bc.getColor());
+					g.fillRect(2 + col * compSize, 2 + row * compSize, compSize, compSize);
 				}
 			}
 		}
@@ -204,6 +219,16 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 //		}
 
 	} // end paintComponent()
+	
+	private void simulateMouseClick(){
+		/**
+		 * for some reason if you click on the gameboard first it will repaint 2 boards, one offset from the other
+		 * However if you click an empty square before that it will not repaint the board twice.
+		 * This function does that, hopefully can be taken out later
+		 */
+		MouseEvent me = new MouseEvent((Component) this, (int) 0, (long) 0, (int) 0, 10, 10, (int) 0, true);
+		mousePressed(me);
+	}
 
 	/**
 	 * Respond to a user click on the board. If no game is in progress, show an
@@ -211,13 +236,14 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	 * and call doClickSquare() to handle it.
 	 */
 	public void mousePressed(MouseEvent evt) {
-		System.out.println("mousePressed");
-		int col = (evt.getX() - 2) / 20;
-		int row = (evt.getY() - 2) / 20;
-
+		
+		int col = (evt.getX() - 2) / boardProperties.getComponentSize();
+		int row = (evt.getY() - 2) / boardProperties.getComponentSize();
+		System.out.println("mousePressed @ x_pos="+col+":y_pos="+row);
+		
 		BoardComponent bc = board.pieceAt(row, col);
 		System.err.println("************* BOARD SQUARE DATE *************");
-    	System.err.println(bc);
+    	System.err.println("" + bc.toString());
     	System.err.println("************* BOARD SQUARE DATE *************");
 		if(bc.getLocation() != Location.OUT_OF_BOUNDS){
 			doClickSquare(row, col);
@@ -245,15 +271,12 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     void doClickSquare(int row, int col) {
     	for(int i = 0; i < validMoves.size(); i++){
     		validMoves.get(i).setHighlight(false);
+    		validMoves.get(i).setStackable(false);
     	}
     	System.out.println("doClickSquare");
     	BoardComponent bc = board.pieceAt(row, col);
-//    	System.err.println("************* BOARD SQUARE DATE *************");
-//    	System.err.println(bc);
-//    	System.err.println("************* BOARD SQUARE DATE *************");
     	if(bc.isOccupied()){
-    		System.out.println("you clicked an occupied square");
-    		System.out.println("BoardComponent with ID of -- " + bc.getId());
+    		System.out.println("you clicked BoardComponent with ID of -- " + bc.getId());
     		validMoves = bc.getCharacter().getPossibleMoves(board, bc);
     		for(int i = 0; i < validMoves.size(); i++){
     			System.out.println("valid moves found at positions -- " + validMoves.get(i).getCoordinate().toString());

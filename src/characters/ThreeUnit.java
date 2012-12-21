@@ -3,23 +3,21 @@ package characters;
 import java.util.ArrayList;
 import java.util.List;
 
-import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
-import basecomponents.ObjectMove;
 import enums.Player;
-import gameparts.ObjectData;
+import enums.Ranks;
 
 public class ThreeUnit extends MovableObject {
 
 	List<MovableObject> components;
 	
 	public ThreeUnit(Player p) {
-		super(p);
+		super(p, Ranks.LEVEL_THREE);
 		COMBAT_VALUE = 3;
 	}
 	
 	public ThreeUnit(Player p, MovableObject comp1, MovableObject comp2, MovableObject comp3){
-		super(p);
+		super(p, Ranks.LEVEL_THREE);
 		components = new ArrayList<MovableObject>();
 		components.add(comp1);
 		components.add(comp2);
@@ -28,16 +26,11 @@ public class ThreeUnit extends MovableObject {
 	}
 	
 	public ThreeUnit(Player p, MovableObject comp1, MovableObject comp2){
-		super(p);
+		super(p, Ranks.LEVEL_THREE);
 		components = new ArrayList<MovableObject>();
 		components.add(comp1);
 		components.add(comp2);
 		COMBAT_VALUE = 3;
-	}
-	
-	@Override
-	public int getCombatValue() {
-		return COMBAT_VALUE;
 	}
 	
 	@Override

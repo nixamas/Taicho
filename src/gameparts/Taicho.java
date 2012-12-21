@@ -3,9 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -48,6 +46,7 @@ public class Taicho extends JPanel {
 		System.err.println("b4 setVisible");
 		window.setVisible(true);
 		System.err.println("after setVisible");
+		
 	}
 
 	/**

@@ -1,5 +1,6 @@
 package enums;
 
-public class MoveManager {
-
+public interface MoveManager {
+	public Object[] getMoves();
+	public int getMove(int i);
 }
