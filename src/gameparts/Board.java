@@ -12,7 +12,6 @@ import javax.swing.JPanel;
 
 import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
-import enums.BoardDimensions;
 import enums.Location;
 import enums.Player;
 
@@ -55,7 +54,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		System.out.println("Board constructor");
 		board = null;
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(20);
+		boardProperties = new BoardDimensions(45);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 		int i = boardProperties.getComponentSize();
 		i = boardProperties.getBoardLength();
 		i = boardProperties.getBoardWidth();
@@ -145,8 +144,13 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		g.setColor(Color.BLACK);
 		int compSize = boardProperties.getComponentSize();
 		int charSize = boardProperties.getCharacterDimension();
+		int brdLngth = boardProperties.getBoardLength();
+		int brdWdth = boardProperties.getBoardWidth();
+		
 		g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
 		g.drawRect(1, 1, getSize().width - 3, getSize().height - 3);
+//		g.drawRect(0, 0, brdLngth - 1, brdWdth - 1);
+//		g.drawRect(1, 1, brdLngth - 3, brdWdth - 3);
 
 		/* Draw the squares of the checkerboard and the checkers. */
 		for (int col = 0; col < 15; col++) {
@@ -229,8 +233,8 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		 * However if you click an empty square before that it will not repaint the board twice.
 		 * This function does that, hopefully can be taken out later
 		 */
-		MouseEvent me = new MouseEvent((Component) this, (int) 0, (long) 0, (int) 0, 10, 10, (int) 0, true);
-		mousePressed(me);
+//		MouseEvent me = new MouseEvent((Component) this, (int) 0, (long) 0, (int) 0, 10, 10, (int) 0, true);
+//		mousePressed(me);
 	}
 
 	/**
@@ -373,4 +377,8 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		return false;
     	
     }
+    
+	public BoardDimensions getBoardProperties() {
+		return boardProperties;
+	}
 }

@@ -8,6 +8,7 @@ import characters.ThreeUnit;
 import characters.TwoUnit;
 import enums.Location;
 import enums.Player;
+import exceptions.BoardComponentNotFoundException;
 
 
 public class ObjectData {
@@ -55,7 +56,14 @@ public class ObjectData {
 						|| ((row >= 6) && (col <= 2 || col >= 12))) {
 					// position is not on board (invisible section
 					board[row][col] = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(col, row, index));
-				} else {
+				} else if((col <= 2) && (row >= 3 && row <=5)){
+					// position is Player One Castle
+					board[row][col] = new BoardComponent(Location.PLAYER_ONE_CASTLE, new Coordinate(col, row, index));
+				} else if((col >= 12) && (row >= 3 && row <=5)){
+					// position is Player Two Castle
+					board[row][col] = new BoardComponent(Location.PLAYER_TWO_CASTLE, new Coordinate(col, row, index));
+				}
+				else {
 					// position is empty
 					board[row][col] = new BoardComponent(Location.GAME_BOARD, new Coordinate(col, row, index));
 				}
@@ -93,7 +101,7 @@ public class ObjectData {
 		return new Coordinate();//new BoardComponent(null, null);
 	}
 	
-	public BoardComponent getBoardComponentAtId(int id){
+	public BoardComponent getBoardComponentAtId(int id) {
 		for (int col = 0; col < 15; col++) {
 			for (int row = 0; row < 9; row++) {
 				if(board[row][col].getCoordinate().getId() == id){
@@ -102,8 +110,8 @@ public class ObjectData {
 				}
 			}
 		}
-		//shouldnt happen, but... :)		
-		return null;
+				
+		throw new BoardComponentNotFoundException();
 	}
 	
 	public BoardComponent getSelectedBoardComponent(){
@@ -115,6 +123,19 @@ public class ObjectData {
 			}
 		}
 		//return empty object if not found
-		return new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate());
+		throw new BoardComponentNotFoundException();
+	}
+	
+	public boolean isWithinBufferZone(int bufferZone, BoardComponent selectedBc, BoardComponent potentialBc){
+		Coordinate selectedCoor = selectedBc.getCoordinate();
+		Coordinate potentialCoor = potentialBc.getCoordinate();
+		if( (( potentialCoor.getPosY() <= (selectedCoor.getPosY() + bufferZone) ) && ( potentialCoor.getPosY() >= (selectedCoor.getPosY() - bufferZone))) &&
+				(( potentialCoor.getPosX() <= (selectedCoor.getPosX() + bufferZone) ) && ( potentialCoor.getPosX() >= (selectedCoor.getPosX() - bufferZone))) ){
+			System.out.println(potentialCoor.toString() + " - found whithin bufferzone of - " + selectedCoor);
+			return true;
+		}else{
+			System.err.println("WARNING: " + potentialCoor.toString() + " - was not found whithin bufferzone of - " + selectedCoor);
+			return false;
+		}
 	}
 }

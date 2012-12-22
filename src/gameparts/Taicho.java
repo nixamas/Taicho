@@ -58,7 +58,7 @@ public class Taicho extends JPanel {
 	public Taicho() {
 		System.out.println("Taicho constructor");
 		setLayout(null); // I will do the layout myself.
-		setPreferredSize(new Dimension(350, 250));
+		
 
 		this.setBackground(Color.WHITE); // Dark green background.
 
@@ -67,6 +67,10 @@ public class Taicho extends JPanel {
 		Board board = new Board(); // Note: The constructor for the
 							// board also creates the buttons
 							// and label.
+		
+		setPreferredSize(new Dimension(board.getBoardProperties().getBoardLength()+30, board.getBoardProperties().getBoardWidth()+30));
+		
+		
 		System.err.println("b4 adding board");
 		add(board);
 		System.err.println("after adding board");
@@ -76,7 +80,7 @@ public class Taicho extends JPanel {
 		 * setBounds() method.
 		 */
 
-		board.setBounds(20, 20, 304, 184); // Note: size MUST be 164-by-164 !
+		board.setBounds(10, 10, board.getBoardProperties().getBoardLength() + 100, board.getBoardProperties().getBoardWidth() + 100); // Note: size MUST be 164-by-164 !
 //		message.setBounds(0, 200, 350, 30);
 
 	} // end constructor
