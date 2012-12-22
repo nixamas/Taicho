@@ -24,4 +24,8 @@ public enum LevelTwoLegalMoves implements MoveManager{
     	LevelTwoLegalMoves[] array = values();
 		return array[i].getNumVal();
 	}
+    
+	public static int getBufferValue() {
+		return 2;
+	}
 }

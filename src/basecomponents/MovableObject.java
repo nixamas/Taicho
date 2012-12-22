@@ -10,6 +10,7 @@ import enums.Location;
 import enums.MoveManager;
 import enums.Player;
 import enums.Ranks;
+import exceptions.BoardComponentNotFoundException;
 import gameparts.ObjectData;
 
 
@@ -76,22 +77,26 @@ public abstract class MovableObject {
 	public ArrayList<BoardComponent> getPossibleMoves(ObjectData board, BoardComponent bc){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		ArrayList<MoveManager> mm = new ArrayList<MoveManager>();
+		int bufferZone = 0;
 		switch(rank){
 			case NONE:
 				break;
 			case LEVEL_ONE:
+				bufferZone = LevelOneLegalMoves.getBufferValue();
 				LevelOneLegalMoves[] l1moves = LevelOneLegalMoves.values();
 				for(int i = 0; i < l1moves.length; i++){
 					mm.add(l1moves[i]);
 				}
 				break;
 			case LEVEL_TWO:
+				bufferZone = LevelTwoLegalMoves.getBufferValue();
 				LevelTwoLegalMoves[] l2moves = LevelTwoLegalMoves.values();
 				for(int i = 0; i < l2moves.length; i++){
 					mm.add(l2moves[i]);
 				}
 				break;
 			case LEVEL_THREE:
+				bufferZone = LevelThreeLegalMoves.getBufferValue();
 				LevelThreeLegalMoves[] l3moves = LevelThreeLegalMoves.values();
 				for(int i = 0; i < l3moves.length; i++){
 					mm.add(l3moves[i]);
@@ -103,16 +108,24 @@ public abstract class MovableObject {
 		
 		for(int i = 0; i < mm.size(); i++){
 			int changeVal = mm.get(i).getMove(i);
-			BoardComponent potentialPosition = board.getBoardComponentAtId(bc.getId() + changeVal);
-			if( !potentialPosition.isOccupied() && potentialPosition.getLocation() != Location.OUT_OF_BOUNDS ){
-				potentialPosition.setHighlight(true);
-				legalMoves.add(potentialPosition);
-			} else if (potentialPosition.isOccupied()){
-				if(potentialPosition.getCharacter().getPlayer() == bc.getCharacter().getPlayer()){
-					potentialPosition.setStackable(true);
-					legalMoves.add(potentialPosition);
-				}
+			try{
+				BoardComponent potentialPosition = board.getBoardComponentAtId(bc.getId() + changeVal);
+				if( board.isWithinBufferZone(bufferZone, bc, potentialPosition)){
+					if( !potentialPosition.isOccupied() && potentialPosition.getLocation() != Location.OUT_OF_BOUNDS ){
+						potentialPosition.setHighlight(true);
+						legalMoves.add(potentialPosition);
+					} else if (potentialPosition.isOccupied()){
+						if(potentialPosition.getCharacter().getPlayer() == bc.getCharacter().getPlayer() 
+								&& ( potentialPosition.getCharacter().getRank() != Ranks.TAICHO || potentialPosition.getCharacter().getRank() != Ranks.LEVEL_THREE)){
+							potentialPosition.setStackable(true);
+							legalMoves.add(potentialPosition);
+						}
+					}
+				}	
+			}catch(BoardComponentNotFoundException bcnfe){
+				System.err.println(bcnfe.getMessage());
 			}
+			
 		}
 		
 //		for(int i = 0; i < legalMoves.size(); i++){

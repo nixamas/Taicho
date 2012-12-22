@@ -24,4 +24,8 @@ public enum LevelOneLegalMoves implements MoveManager{
 		LevelOneLegalMoves[] array = values();
 		return array[i].getNumVal();
 	}
+
+	public static int getBufferValue() {
+		return 1;
+	}
 }

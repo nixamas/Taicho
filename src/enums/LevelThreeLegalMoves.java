@@ -24,4 +24,8 @@ public enum LevelThreeLegalMoves implements MoveManager {
     	LevelThreeLegalMoves[] array = values();
 		return array[i].getNumVal();
 	}
+    
+	public static int getBufferValue() {
+		return 3;
+	}
 }
