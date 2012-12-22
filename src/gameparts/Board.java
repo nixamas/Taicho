@@ -258,7 +258,11 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 				doClickSquare(row, col);
 			}else if( validSelection(bc) ){
 				System.out.println("make move to new VALID square");
-				makeMove(row, col);
+				if(bc.isOccupied()){
+					stackUnits(row, col);
+				}else{
+					makeMove(row, col);
+				}
 		    	for(int i = 0; i < validMoves.size(); i++){
 		    		validMoves.get(i).setHighlight(false);
 		    		validMoves.get(i).setStackable(false);
@@ -363,6 +367,10 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     	
     	selectedBc.setSelected(false);
     	repaint();
+    }
+    
+    private void stackUnits(int row, int col){
+    	System.out.println("stack units");
     }
     
     private boolean validSelection(BoardComponent bc){
