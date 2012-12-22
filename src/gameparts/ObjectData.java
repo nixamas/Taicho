@@ -4,7 +4,8 @@ import java.awt.Color;
 import basecomponents.BoardComponent;
 import basecomponents.Coordinate;
 import characters.Captain;
-import characters.OneUnit;
+import characters.ThreeUnit;
+import characters.TwoUnit;
 import enums.Location;
 import enums.Player;
 
@@ -45,11 +46,11 @@ public class ObjectData {
 				} else if (((col == 10) && (row % 2 == 0))
 						|| ((col == 9 || col == 11) && (row % 2 == 1))) {
 					// position is Player Two Samurai
-					 board[row][col] = new BoardComponent(new OneUnit(player2), Location.GAME_BOARD, new Coordinate(col, row, index));
+					 board[row][col] = new BoardComponent(new ThreeUnit(player2), Location.GAME_BOARD, new Coordinate(col, row, index));
 				} else if (((col == 4) && (row % 2 == 0))
 						|| ((col == 3 || col == 5) && (row % 2 == 1))) {
 					// position is Player One Samurai
-					board[row][col] = new BoardComponent(new OneUnit(player1), Location.GAME_BOARD, new Coordinate(col, row, index));
+					board[row][col] = new BoardComponent(new TwoUnit(player1), Location.GAME_BOARD, new Coordinate(col, row, index));
 				} else if (((row <= 2) && (col <= 2 || col >= 12))
 						|| ((row >= 6) && (col <= 2 || col >= 12))) {
 					// position is not on board (invisible section
@@ -103,5 +104,17 @@ public class ObjectData {
 		}
 		//shouldnt happen, but... :)		
 		return null;
+	}
+	
+	public BoardComponent getSelectedBoardComponent(){
+		for (int col = 0; col < 15; col++) {
+			for (int row = 0; row < 9; row++) {
+				if( board[row][col].isSelected()){
+					return board[row][col];
+				}
+			}
+		}
+		//return empty object if not found
+		return new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate());
 	}
 }

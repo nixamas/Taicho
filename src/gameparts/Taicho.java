@@ -34,7 +34,7 @@ public class Taicho extends JPanel {
 	 */
 	public static void main(String[] args) {
 		System.out.println("MAIN");
-		JFrame window = new JFrame("Checkers");
+		JFrame window = new JFrame("Taicho");
 		Taicho content = new Taicho();
 		window.setContentPane(content);
 		window.pack();

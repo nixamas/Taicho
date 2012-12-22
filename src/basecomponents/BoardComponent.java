@@ -3,6 +3,7 @@ import java.awt.Color;
 
 import characters.EmptyObject;
 import enums.Location;
+import enums.Player;
 
 
 public class BoardComponent {
@@ -11,6 +12,7 @@ public class BoardComponent {
 	private Color color = Color.BLACK;
 	private boolean occupied = false;
 	private boolean stackable = false;
+	private boolean selected = false;
 	private MovableObject character;
 	private boolean highlight;
 	
@@ -24,9 +26,15 @@ public class BoardComponent {
 		this.occupied = false;
 		this.location = loc;
 		this.coordinate = coord;
+		this.character = new EmptyObject();
 	}
 	public boolean isOccupied() {
-		return occupied;
+		if(this.character.getPlayer() != Player.NONE){
+			return true;
+		}else{
+			return false;
+		}
+//		return occupied;
 	}
 	public MovableObject getCharacter() {
 		if(character != null){
@@ -37,6 +45,11 @@ public class BoardComponent {
 	}
 	public void setCharacter(MovableObject character) {
 		this.character = character;
+	}
+	public MovableObject removeCharachter(){
+		MovableObject tempChar= this.character;
+		this.character = new EmptyObject();
+		return tempChar;
 	}
 	public Location getLocation() {
 		return location;
@@ -76,6 +89,12 @@ public class BoardComponent {
 	}
 	public void setStackable(boolean stackable) {
 		this.stackable = stackable;
+	}
+	public boolean isSelected() {
+		return selected;
+	}
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 	@Override
 	public String toString() {

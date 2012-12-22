@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 import basecomponents.BoardComponent;
+import basecomponents.MovableObject;
 import enums.BoardDimensions;
 import enums.Location;
 import enums.Player;
@@ -164,13 +165,15 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 					g.fillRect(2 + col * compSize, 2 + row * compSize, compSize, compSize);
 
 					if(bc.isOccupied()){
-						if (bc.getCharacter().getPlayer() == Player.PLAYER_ONE) {
-							g.setColor(bc.getCharacter().getColor());
-							g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
-						} else if (bc.getCharacter().getPlayer() == Player.PLAYER_TWO) {
-							g.setColor(bc.getCharacter().getColor());
-							g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
-						}
+						g.setColor(bc.getCharacter().getColor());
+						g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
+//						if (bc.getCharacter().getPlayer() == Player.PLAYER_ONE) {
+//							g.setColor(bc.getCharacter().getColor());
+//							g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
+//						} else if (bc.getCharacter().getPlayer() == Player.PLAYER_TWO) {
+//							g.setColor(bc.getCharacter().getColor());
+//							g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
+//						}
 					}
 				}else{
 					g.setColor(bc.getColor());
@@ -246,7 +249,18 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     	System.err.println("" + bc.toString());
     	System.err.println("************* BOARD SQUARE DATE *************");
 		if(bc.getLocation() != Location.OUT_OF_BOUNDS){
-			doClickSquare(row, col);
+			if(validMoves.isEmpty()){
+				System.out.println("valid moves is empty, first click");
+				doClickSquare(row, col);
+			}else if( validSelection(bc) ){
+				System.out.println("make move to new VALID square");
+				makeMove(row, col);
+		    	for(int i = 0; i < validMoves.size(); i++){
+		    		validMoves.get(i).setHighlight(false);
+		    		validMoves.get(i).setStackable(false);
+		    	}
+		    	validMoves.clear();
+			}
 		}
 		
 	}
@@ -268,23 +282,26 @@ public class Board extends JPanel implements ActionListener, MouseListener {
      * square in the specified row and col.  It has already been checked
      * that a game is, in fact, in progress.
      */
-    void doClickSquare(int row, int col) {
-    	for(int i = 0; i < validMoves.size(); i++){
-    		validMoves.get(i).setHighlight(false);
-    		validMoves.get(i).setStackable(false);
-    	}
+    private void doClickSquare(int row, int col) {
     	System.out.println("doClickSquare");
     	BoardComponent bc = board.pieceAt(row, col);
     	if(bc.isOccupied()){
-    		System.out.println("you clicked BoardComponent with ID of -- " + bc.getId());
-    		validMoves = bc.getCharacter().getPossibleMoves(board, bc);
-    		for(int i = 0; i < validMoves.size(); i++){
-    			System.out.println("valid moves found at positions -- " + validMoves.get(i).getCoordinate().toString());
-    		}
-    	}else{
-    		System.out.println("empty square");
+	    	if(validMoves.isEmpty()){
+	    		bc.setSelected(true);
+	    		System.out.println("you clicked BoardComponent with ID of -- " + bc.getId());
+	    		validMoves = bc.getCharacter().getPossibleMoves(board, bc);
+	    		for(int i = 0; i < validMoves.size(); i++){
+	    			System.out.println("valid moves found at positions -- " + validMoves.get(i).getCoordinate().toString());
+	    		}
+	    	}
+//	    	}else if( !validMoves.isEmpty() && validSelection(bc) ){
+//	        	for(int i = 0; i < validMoves.size(); i++){
+//	        		validMoves.get(i).setHighlight(false);
+//	        		validMoves.get(i).setStackable(false);
+//	        	}
+//	    	}
     	}
-    	
+       	
        board.getCoordinateOfId(bc.getId());
        board.getBoardComponentAtId(bc.getId());
        repaint();
@@ -301,12 +318,6 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 //             return;
 //          }
        
-       /* If no piece has been selected to be moved, the user must first
-        select a piece.  Show an error message and return. */
-       
-       if (selectedRow < 0) {
-          return;
-       }
        
        /* If the user clicked on a square where the selected piece can be
         legally moved, then make the move and return. */
@@ -324,4 +335,42 @@ public class Board extends JPanel implements ActionListener, MouseListener {
        
        
     }  // end doClickSquare()
+    
+    private void makeMove(int row, int col){
+//    	for(int i = 0; i < validMoves.size(); i++){
+//    		validMoves.get(i).setHighlight(false);
+//    		validMoves.get(i).setStackable(false);
+//    	}
+    	System.out.println("doClickSquare");
+    	BoardComponent bc = board.pieceAt(row, col);
+    	BoardComponent selectedBc = board.getSelectedBoardComponent();
+    	if(!bc.isOccupied() && bc.getLocation() != Location.OUT_OF_BOUNDS){
+    		System.out.println("square IS NOT occupied");
+    		MovableObject temp = selectedBc.removeCharachter();
+    		bc.setCharacter( temp );
+    	}else if( bc.isOccupied() ){
+    		System.out.println("square IS occupied");
+    		if(bc.getCharacter().getPlayer() == selectedBc.getCharacter().getPlayer()){
+    			//characters are on the same team
+    		}else if(bc.getCharacter().getPlayer() != selectedBc.getCharacter().getPlayer()){
+    			//characters are on opposite teams
+    		}
+    	}
+    	
+    	selectedBc.setSelected(false);
+    	repaint();
+    }
+    
+    private boolean validSelection(BoardComponent bc){
+//    	System.out.println("find if " + bc.getCoordinate().toString() + "  is valid");
+    	for(BoardComponent vbc : validMoves){
+//    		System.out.println("find if " + vbc.getCoordinate().toString() + " is the selected move position");
+    		if(vbc.getCoordinate().equals(bc.getCoordinate())){
+//    			System.out.println("found a match at " + bc.getCoordinate().toString());
+    			return true;
+    		}
+    	}
+		return false;
+    	
+    }
 }
