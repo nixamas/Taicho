@@ -59,10 +59,11 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		System.out.println("Board constructor");
 		board = null;
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(45);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
+		boardProperties = new BoardDimensions(60);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 //		game = taicho;
 		setBackground(Color.BLACK);
 		addMouseListener(this);
+		currentPlayer = Player.NONE;
 //		taicho.setResignButton(new JButton("Resign"));
 //		taicho.getResignButton().addActionListener(this);
 //		taicho.setNewGameButton(new JButton("New Game"));
@@ -143,12 +144,17 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 
 		/* Draw a two-pixel black border around the edges of the canvas. */
 		System.out.println("Paint components");
-		g.setColor(Color.BLACK);
+		g.setColor(currentPlayer.getColor()); 		
 		int compSize = boardProperties.getComponentSize();
 		int charSize = boardProperties.getCharacterDimension();
+		int bL = boardProperties.getBoardLength();
+		int bW = boardProperties.getBoardWidth();
+		int charOffset = boardProperties.getCharacterOffset();
 		
-		g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
-		g.drawRect(1, 1, getSize().width - 3, getSize().height - 3);
+//		g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
+//		g.drawRect(1, 1, getSize().width - 3, getSize().height - 3);
+		g.drawRect(0, 0, bL - 1, bW - 1);
+		g.drawRect(1, 1, bL - 3, bW - 3);
 
 		/* Draw the squares of the checkerboard and the checkers. */
 		for (int col = 0; col < 15; col++) {
@@ -167,7 +173,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 
 					if(bc.isOccupied()){
 						g.setColor(bc.getCharacter().getColor());
-						g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
+						g.fillOval(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
 					}
 				}else{
 					g.setColor(bc.getColor());
@@ -207,6 +213,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 				if(validMoves.isEmpty()){
 					System.out.println("valid moves is empty, first click");
 					doClickSquare(row, col);
+					currentPlayer = bc.getCharacter().getPlayer();
 				}else if( validSelection(bc) ){
 					System.out.println("make move to new VALID square");
 					if(bc.isOccupied()){

@@ -6,7 +6,7 @@ import java.awt.Color;
 
 public enum Player {
 	NONE{
-		Color color;
+		Color color = Color.WHITE;
 		public void setColor(Color col){
 			color = col;
 		}
