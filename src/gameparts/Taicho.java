@@ -69,8 +69,7 @@ public class Taicho extends JPanel {
 							// and label.
 		
 		setPreferredSize(new Dimension(board.getBoardProperties().getBoardLength()+30, board.getBoardProperties().getBoardWidth()+30));
-		
-		
+				
 		System.err.println("b4 adding board");
 		add(board);
 		System.err.println("after adding board");

@@ -7,6 +7,7 @@ import enums.Player;
 
 
 public class BoardComponent {
+
 	private final Coordinate coordinate;
 	private final Location location;
 	private Color color = Color.BLACK;
@@ -102,6 +103,32 @@ public class BoardComponent {
 				+ location + ", color=" + color + ", occupied=" + occupied
 				+ ", highlight=" + highlight + "]";
 	}
-	
-	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((coordinate == null) ? 0 : coordinate.hashCode());
+		result = prime * result
+				+ ((location == null) ? 0 : location.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		BoardComponent other = (BoardComponent) obj;
+		if (coordinate == null) {
+			if (other.coordinate != null)
+				return false;
+		} else if (!coordinate.equals(other.coordinate))
+			return false;
+		if (location != other.location)
+			return false;
+		return true;
+	}
 }

@@ -1,6 +1,5 @@
 package gameparts;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,9 +13,10 @@ import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
 import enums.Location;
 import enums.Player;
+import exceptions.BoardComponentNotFoundException;
 
 public class Board extends JPanel implements ActionListener, MouseListener {
-
+	
 	/**
 	 * 
 	 */
@@ -141,7 +141,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 
 		/* Draw a two-pixel black border around the edges of the canvas. */
 		System.out.println("Paint components");
-		g.setColor(Color.BLACK);
+		g.setColor(Color.WHITE);
 		int compSize = boardProperties.getComponentSize();
 		int charSize = boardProperties.getCharacterDimension();
 		int brdLngth = boardProperties.getBoardLength();
@@ -248,28 +248,34 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		int row = (evt.getY() - 2) / boardProperties.getComponentSize();
 		System.out.println("mousePressed @ x_pos="+col+":y_pos="+row);
 		
-		BoardComponent bc = board.pieceAt(row, col);
-		System.err.println("************* BOARD SQUARE DATE *************");
-    	System.err.println("" + bc.toString());
-    	System.err.println("************* BOARD SQUARE DATE *************");
-		if(bc.getLocation() != Location.OUT_OF_BOUNDS){
-			if(validMoves.isEmpty()){
-				System.out.println("valid moves is empty, first click");
-				doClickSquare(row, col);
-			}else if( validSelection(bc) ){
-				System.out.println("make move to new VALID square");
-				if(bc.isOccupied()){
-					stackUnits(row, col);
-				}else{
-					makeMove(row, col);
+		try{
+			BoardComponent bc = board.pieceAt(row, col);
+			System.err.println("************* BOARD SQUARE DATE *************");
+	    	System.err.println("" + bc.toString());
+	    	System.err.println("************* BOARD SQUARE DATE *************");
+			if(bc.getLocation() != Location.OUT_OF_BOUNDS){
+				if(validMoves.isEmpty()){
+					System.out.println("valid moves is empty, first click");
+					doClickSquare(row, col);
+				}else if( validSelection(bc) ){
+					System.out.println("make move to new VALID square");
+					if(bc.isOccupied()){
+						stackUnits(row, col);
+					}else{
+						makeMove(row, col);
+					}
+			    	for(int i = 0; i < validMoves.size(); i++){
+			    		validMoves.get(i).setHighlight(false);
+			    		validMoves.get(i).setStackable(false);
+			    	}
+			    	validMoves.clear();
 				}
-		    	for(int i = 0; i < validMoves.size(); i++){
-		    		validMoves.get(i).setHighlight(false);
-		    		validMoves.get(i).setStackable(false);
-		    	}
-		    	validMoves.clear();
-			}
+			}	
+		}catch(BoardComponentNotFoundException bcnfe){
+			System.err.println(bcnfe.getMessage());
+			
 		}
+		
 		
 	}
 

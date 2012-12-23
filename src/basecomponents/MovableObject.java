@@ -78,6 +78,7 @@ public abstract class MovableObject {
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		ArrayList<MoveManager> mm = new ArrayList<MoveManager>();
 		int bufferZone = 0;
+		boolean isTaicho = false;
 		switch(rank){
 			case NONE:
 				break;
@@ -102,11 +103,39 @@ public abstract class MovableObject {
 					mm.add(l3moves[i]);
 				}
 				break;
+			case TAICHO:
+				isTaicho = true;
+				break;
 			default:
 				break;
 		}
 		
-		for(int i = 0; i < mm.size(); i++){
+		if( !isTaicho ){
+			System.out.println("you clicked a samurai");
+			legalMoves = getSamuraiMoves(mm, board, bc, bufferZone);
+		}else if( isTaicho ){
+			System.out.println("you clicked a taicho");
+			legalMoves = getTaichoMoves(board, bc);
+		}
+		
+		return legalMoves;
+	}
+	
+	private ArrayList<BoardComponent> getTaichoMoves(ObjectData board, BoardComponent bc){
+		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
+		ArrayList<BoardComponent> castle = board.getCastleBoardComponents( bc.getCharacter().getPlayer() );
+		for(BoardComponent potentialBc : castle ){
+			if( !potentialBc.equals(bc) && !potentialBc.isOccupied() ){
+				potentialBc.setHighlight(true);
+				legalMoves.add(potentialBc);
+			}
+		}
+		return legalMoves;
+	}
+	
+	private ArrayList<BoardComponent> getSamuraiMoves(ArrayList<MoveManager> mm,ObjectData board, BoardComponent bc, int bufferZone){
+		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
+		for(int i = 0; i < mm.size(); i++){ 
 			int changeVal = mm.get(i).getMove(i);
 			try{
 				BoardComponent potentialPosition = board.getBoardComponentAtId(bc.getId() + changeVal);
@@ -124,14 +153,8 @@ public abstract class MovableObject {
 				}	
 			}catch(BoardComponentNotFoundException bcnfe){
 				System.err.println(bcnfe.getMessage());
-			}
-			
-		}
-		
-//		for(int i = 0; i < legalMoves.size(); i++){
-//			legalMoves.get(i).setHighlight(true);
-//		}
-		
+			}	
+		}//end for loop
 		return legalMoves;
 	}
 	

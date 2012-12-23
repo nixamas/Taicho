@@ -1,5 +1,6 @@
 package gameparts;
 import java.awt.Color;
+import java.util.ArrayList;
 
 import basecomponents.BoardComponent;
 import basecomponents.Coordinate;
@@ -86,7 +87,12 @@ public class ObjectData {
 	 * Return the contents of the square in the specified row and column.
 	 */
 	public BoardComponent pieceAt(int row, int col) {
-		return board[row][col];
+		if(row > 8 || col > 14){
+			throw new BoardComponentNotFoundException();
+		}else{
+			return board[row][col];
+		}
+		
 	}
 	
 	public Coordinate getCoordinateOfId(int id){
@@ -137,5 +143,19 @@ public class ObjectData {
 			System.err.println("WARNING: " + potentialCoor.toString() + " - was not found whithin bufferzone of - " + selectedCoor);
 			return false;
 		}
+	}
+	
+	public ArrayList<BoardComponent> getCastleBoardComponents(Player p){
+		ArrayList<BoardComponent> castleBc = new ArrayList<BoardComponent>();
+		for (int col = 0; col < 15; col++) {
+			for (int row = 0; row < 9; row++) {
+				if( board[row][col].getLocation() == Location.PLAYER_ONE_CASTLE && p == Player.PLAYER_ONE ){
+					castleBc.add(board[row][col]);
+				}else if( board[row][col].getLocation() == Location.PLAYER_TWO_CASTLE && p == Player.PLAYER_TWO ){
+					castleBc.add(board[row][col]);
+				}
+			}
+		}
+		return castleBc;
 	}
 }
