@@ -16,7 +16,7 @@ import gameparts.TaichoGameData;
 
 public abstract class MovableObject {
 	
-	protected int COMBAT_VALUE;
+	protected int combatValue;
 	protected Player player;
 	protected Ranks rank;
 	
@@ -27,7 +27,7 @@ public abstract class MovableObject {
 	}
 
 	public int getCombatValue(){
-		return this.COMBAT_VALUE;
+		return this.combatValue;
 	}
 	public Color getColor() {
 		return player.getColor();
@@ -51,22 +51,22 @@ public abstract class MovableObject {
 		this.rank = rank;
 		switch(rank){
 			case NONE:
-				this.COMBAT_VALUE = -1;
+				this.combatValue = -1;
 				break;
 			case LEVEL_ONE:
-				this.COMBAT_VALUE = 1;
+				this.combatValue = 1;
 				break;
 			case LEVEL_TWO:
-				this.COMBAT_VALUE = 2;
+				this.combatValue = 2;
 				break;
 			case LEVEL_THREE:
-				this.COMBAT_VALUE = 3;
+				this.combatValue = 3;
 				break;
 			case TAICHO:
-				this.COMBAT_VALUE = 1;
+				this.combatValue = 1;
 				break;
 			default:
-				this.COMBAT_VALUE = -1;
+				this.combatValue = -1;
 				break;
 		}
 		this.rank = rank;

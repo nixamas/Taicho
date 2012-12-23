@@ -32,11 +32,6 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 
 	boolean gameInProgress; // Is a game currently in progress?
 
-	/* The next three variables are valid only when the game is in progress. */
-
-	Player currentPlayer; // Whose turn is it now? The possible values
-							// are CheckersData.RED and CheckersData.BLACK.
-
 	int selectedRow, selectedCol; // If the current player has selected a piece
 									// to
 									// move, these give the row and column
@@ -45,12 +40,12 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 
 	ArrayList<BoardComponent> validMoves; // An array containing the legal moves for the
 								// current player.
-	Player p1, p2;
+	Player player1, player2, currentPlayer;
 
 	BoardDimensions boardProperties;
 //	Taicho game;
 
-	/**
+	/**player
 	 * Constructor. Create the buttons and label. Listens for mouse clicks and
 	 * for clicks on the buttons. Create the board and start the first game.
 	 */
@@ -69,9 +64,9 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 //		taicho.setMessage(new JLabel("", JLabel.CENTER));
 //		taicho.getMessage().setFont(new Font("Serif", Font.BOLD, 14));
 //		taicho.getMessage().setForeground(Color.green);
-		p1 = Player.PLAYER_ONE;
-		p2 = Player.PLAYER_TWO;
-		board = new TaichoGameData(p1, p2);
+		player1 = Player.PLAYER_ONE;
+		player2 = Player.PLAYER_TWO;
+		board = new TaichoGameData(player1, player2);
 		// doNewGame();
 		simulateMouseClick();
 	}
@@ -116,7 +111,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 //			game.getMessage().setText("There is no game in progress!");
 			return;
 		}
-		if (currentPlayer == p1)
+		if (currentPlayer == player1)
 			gameOver("RED resigns.  BLACK wins.");
 		else
 			gameOver("BLACK resigns.  RED wins.");

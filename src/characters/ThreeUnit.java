@@ -15,7 +15,7 @@ public class ThreeUnit extends MovableObject {
 	
 	public ThreeUnit(Player p) {
 		super(p, Ranks.LEVEL_THREE);
-		COMBAT_VALUE = 3;
+		combatValue = 3;
 	}
 	
 	public ThreeUnit(Player p, MovableObject comp1, MovableObject comp2, MovableObject comp3){
@@ -24,7 +24,7 @@ public class ThreeUnit extends MovableObject {
 		components.add(comp1);
 		components.add(comp2);
 		components.add(comp3);
-		COMBAT_VALUE = 3;
+		combatValue = 3;
 	}
 	
 	public ThreeUnit(Player p, MovableObject comp1, MovableObject comp2){
@@ -32,7 +32,7 @@ public class ThreeUnit extends MovableObject {
 		components = new ArrayList<MovableObject>();
 		components.add(comp1);
 		components.add(comp2);
-		COMBAT_VALUE = 3;
+		combatValue = 3;
 	}
 	
 	@Override
