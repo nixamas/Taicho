@@ -1,11 +1,13 @@
 package characters;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import basecomponents.MovableObject;
 import enums.Player;
 import enums.Ranks;
+import gameparts.Utils;
 
 public class ThreeUnit extends MovableObject {
 
@@ -43,6 +45,18 @@ public class ThreeUnit extends MovableObject {
 		return player;
 	}
 
+	@Override
+	public Color getColor(){
+//		Color c = Color.RED;
+//		if( this.player == Player.PLAYER_ONE ){
+//			c = Color.YELLOW;
+//		}else if( this.player == Player.PLAYER_TWO ){
+//			c = Color.DARK_GRAY;
+//		}
+//		return c;
+		return Utils.blendColor(this.getPlayer().getColor(), Color.BLACK, 0.5);
+	}
+	
 //	@Override
 //	public ArrayList<ObjectMove> getPossibleMoves(ObjectData board, BoardComponent bc) {
 //		// TODO Auto-generated method stub

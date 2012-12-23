@@ -11,7 +11,7 @@ import enums.MoveManager;
 import enums.Player;
 import enums.Ranks;
 import exceptions.BoardComponentNotFoundException;
-import gameparts.ObjectData;
+import gameparts.TaichoGameData;
 
 
 public abstract class MovableObject {
@@ -74,7 +74,7 @@ public abstract class MovableObject {
 
 	//	public abstract void setPlayer(Player p);
 //	public abstract Player getPlayer();
-	public ArrayList<BoardComponent> getPossibleMoves(ObjectData board, BoardComponent bc){
+	public ArrayList<BoardComponent> getPossibleMoves(TaichoGameData board, BoardComponent bc){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		ArrayList<MoveManager> mm = new ArrayList<MoveManager>();
 		int bufferZone = 0;
@@ -121,7 +121,7 @@ public abstract class MovableObject {
 		return legalMoves;
 	}
 	
-	private ArrayList<BoardComponent> getTaichoMoves(ObjectData board, BoardComponent bc){
+	private ArrayList<BoardComponent> getTaichoMoves(TaichoGameData board, BoardComponent bc){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		ArrayList<BoardComponent> castle = board.getCastleBoardComponents( bc.getCharacter().getPlayer() );
 		for(BoardComponent potentialBc : castle ){
@@ -133,7 +133,7 @@ public abstract class MovableObject {
 		return legalMoves;
 	}
 	
-	private ArrayList<BoardComponent> getSamuraiMoves(ArrayList<MoveManager> mm,ObjectData board, BoardComponent bc, int bufferZone){
+	private ArrayList<BoardComponent> getSamuraiMoves(ArrayList<MoveManager> mm,TaichoGameData board, BoardComponent bc, int bufferZone){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		for(int i = 0; i < mm.size(); i++){ 
 			int changeVal = mm.get(i).getMove(i);
@@ -144,10 +144,12 @@ public abstract class MovableObject {
 						potentialPosition.setHighlight(true);
 						legalMoves.add(potentialPosition);
 					} else if (potentialPosition.isOccupied()){
-						if(potentialPosition.getCharacter().getPlayer() == bc.getCharacter().getPlayer() 
-								&& ( potentialPosition.getCharacter().getRank() != Ranks.TAICHO || potentialPosition.getCharacter().getRank() != Ranks.LEVEL_THREE)){
-							potentialPosition.setStackable(true);
-							legalMoves.add(potentialPosition);
+						if( this.rank != Ranks.LEVEL_THREE && this.rank != Ranks.TAICHO ){
+							if(potentialPosition.getCharacter().getPlayer() == bc.getCharacter().getPlayer() 
+									&& ( potentialPosition.getCharacter().getRank() != Ranks.TAICHO && potentialPosition.getCharacter().getRank() != Ranks.LEVEL_THREE)){
+								potentialPosition.setStackable(true);
+								legalMoves.add(potentialPosition);
+							}
 						}
 					}
 				}	

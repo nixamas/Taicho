@@ -20,7 +20,7 @@ import javax.swing.JPanel;
  * to that).
  * 
  */
-public class Taicho extends JPanel {
+public class ProgramMain extends JPanel {
 
 	/**
 	 * 
@@ -35,7 +35,7 @@ public class Taicho extends JPanel {
 	public static void main(String[] args) {
 		System.out.println("MAIN");
 		JFrame window = new JFrame("Taicho");
-		Taicho content = new Taicho();
+		ProgramMain content = new ProgramMain();
 		window.setContentPane(content);
 		window.pack();
 		Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -55,12 +55,12 @@ public class Taicho extends JPanel {
 	 * of the components. A null layout is used. (This is the only thing that is
 	 * done in the main Checkers class.)
 	 */
-	public Taicho() {
+	public ProgramMain() {
 		System.out.println("Taicho constructor");
 		setLayout(null); // I will do the layout myself.
 		
 
-		this.setBackground(Color.WHITE); // Dark green background.
+		this.setBackground(Color.BLACK); // Dark green background.
 
 		/* Create the components and add them to the applet. */
 

@@ -4,22 +4,21 @@ import java.util.ArrayList;
 
 import basecomponents.BoardComponent;
 import basecomponents.Coordinate;
-import characters.Captain;
-import characters.ThreeUnit;
-import characters.TwoUnit;
+import characters.Taicho;
+import characters.OneUnit;
 import enums.Location;
 import enums.Player;
 import exceptions.BoardComponentNotFoundException;
 
 
-public class ObjectData {
+public class TaichoGameData {
 	BoardComponent[][] board;
 	Player player1, player2;
 
 	/**
 	 * Constructor. Create the board and set it up for a new game.
 	 */
-	public ObjectData(Player p1, Player p2) {
+	public TaichoGameData(Player p1, Player p2) {
 		System.out.println("ObjectData constructor");
 		player1 = p1;
 		player2 = p2;
@@ -41,18 +40,18 @@ public class ObjectData {
 			for (int row = 0; row < 9; row++) {
 				if (row == 4 && col == 1) {
 					// position is Player One Taicho
-					board[row][col] = new BoardComponent(new Captain(player1), Location.PLAYER_ONE_CASTLE, new Coordinate(col, row, index));
+					board[row][col] = new BoardComponent(new Taicho(player1), Location.PLAYER_ONE_CASTLE, new Coordinate(col, row, index));
 				} else if (row == 4 && col == 13) {
 					// position is Player Two Taicho
-					board[row][col] = new BoardComponent(new Captain(player2), Location.PLAYER_TWO_CASTLE, new Coordinate(col, row, index));
+					board[row][col] = new BoardComponent(new Taicho(player2), Location.PLAYER_TWO_CASTLE, new Coordinate(col, row, index));
 				} else if (((col == 10) && (row % 2 == 0))
 						|| ((col == 9 || col == 11) && (row % 2 == 1))) {
 					// position is Player Two Samurai
-					 board[row][col] = new BoardComponent(new ThreeUnit(player2), Location.GAME_BOARD, new Coordinate(col, row, index));
+					 board[row][col] = new BoardComponent(new OneUnit(player2), Location.GAME_BOARD, new Coordinate(col, row, index));
 				} else if (((col == 4) && (row % 2 == 0))
 						|| ((col == 3 || col == 5) && (row % 2 == 1))) {
 					// position is Player One Samurai
-					board[row][col] = new BoardComponent(new TwoUnit(player1), Location.GAME_BOARD, new Coordinate(col, row, index));
+					board[row][col] = new BoardComponent(new OneUnit(player1), Location.GAME_BOARD, new Coordinate(col, row, index));
 				} else if (((row <= 2) && (col <= 2 || col >= 12))
 						|| ((row >= 6) && (col <= 2 || col >= 12))) {
 					// position is not on board (invisible section
@@ -128,7 +127,6 @@ public class ObjectData {
 				}
 			}
 		}
-		//return empty object if not found
 		throw new BoardComponentNotFoundException();
 	}
 	

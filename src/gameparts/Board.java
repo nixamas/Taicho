@@ -11,8 +11,12 @@ import javax.swing.JPanel;
 
 import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
+import characters.EmptyObject;
+import characters.ThreeUnit;
+import characters.TwoUnit;
 import enums.Location;
 import enums.Player;
+import enums.Ranks;
 import exceptions.BoardComponentNotFoundException;
 
 public class Board extends JPanel implements ActionListener, MouseListener {
@@ -22,7 +26,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	ObjectData board; // The data for the checkers board is kept here.
+	TaichoGameData board; // The data for the checkers board is kept here.
 						// This board is also responsible for generating
 						// lists of legal moves.
 
@@ -54,10 +58,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		System.out.println("Board constructor");
 		board = null;
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(45);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
-		int i = boardProperties.getComponentSize();
-		i = boardProperties.getBoardLength();
-		i = boardProperties.getBoardWidth();
+		boardProperties = new BoardDimensions(90);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 //		game = taicho;
 		setBackground(Color.BLACK);
 		addMouseListener(this);
@@ -70,7 +71,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 //		taicho.getMessage().setForeground(Color.green);
 		p1 = Player.PLAYER_ONE;
 		p2 = Player.PLAYER_TWO;
-		board = new ObjectData(p1, p2);
+		board = new TaichoGameData(p1, p2);
 		// doNewGame();
 		simulateMouseClick();
 	}
@@ -141,16 +142,12 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 
 		/* Draw a two-pixel black border around the edges of the canvas. */
 		System.out.println("Paint components");
-		g.setColor(Color.WHITE);
+		g.setColor(Color.BLACK);
 		int compSize = boardProperties.getComponentSize();
 		int charSize = boardProperties.getCharacterDimension();
-		int brdLngth = boardProperties.getBoardLength();
-		int brdWdth = boardProperties.getBoardWidth();
 		
 		g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
 		g.drawRect(1, 1, getSize().width - 3, getSize().height - 3);
-//		g.drawRect(0, 0, brdLngth - 1, brdWdth - 1);
-//		g.drawRect(1, 1, brdLngth - 3, brdWdth - 3);
 
 		/* Draw the squares of the checkerboard and the checkers. */
 		for (int col = 0; col < 15; col++) {
@@ -164,20 +161,12 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 					} else {
 						g.setColor(bc.getColor());
 					}
-//					g.fillRect(2 + col * 20, 2 + row * 20, 20, 20);
 					
 					g.fillRect(2 + col * compSize, 2 + row * compSize, compSize, compSize);
 
 					if(bc.isOccupied()){
 						g.setColor(bc.getCharacter().getColor());
 						g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
-//						if (bc.getCharacter().getPlayer() == Player.PLAYER_ONE) {
-//							g.setColor(bc.getCharacter().getColor());
-//							g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
-//						} else if (bc.getCharacter().getPlayer() == Player.PLAYER_TWO) {
-//							g.setColor(bc.getCharacter().getColor());
-//							g.fillOval(4 + col * compSize, 4 + row * compSize, charSize, charSize);
-//						}
 					}
 				}else{
 					g.setColor(bc.getColor());
@@ -185,46 +174,6 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 				}
 			}
 		}
-
-		/*
-		 * If a game is in progress, hilite the legal moves. Note that
-		 * legalMoves is never null while a game is in progress.
-		 */
-
-//		if (gameInProgress) {
-//			/*
-//			 * First, draw a 2-pixel cyan border around the pieces that can be
-//			 * moved.
-//			 */
-//			g.setColor(Color.cyan);
-//			for (int i = 0; i < legalMoves.length; i++) {
-//				g.drawRect(2 + legalMoves[i].fromCol * 20,
-//						2 + legalMoves[i].fromRow * 20, 19, 19);
-//				g.drawRect(3 + legalMoves[i].fromCol * 20,
-//						3 + legalMoves[i].fromRow * 20, 17, 17);
-//			}
-//			/*
-//			 * If a piece is selected for moving (i.e. if selectedRow >= 0),
-//			 * then draw a 2-pixel white border around that piece and draw green
-//			 * borders around each square that that piece can be moved to.
-//			 */
-//			if (selectedRow >= 0) {
-//				g.setColor(Color.white);
-//				g.drawRect(2 + selectedCol * 20, 2 + selectedRow * 20, 19, 19);
-//				g.drawRect(3 + selectedCol * 20, 3 + selectedRow * 20, 17, 17);
-//				g.setColor(Color.green);
-//				for (int i = 0; i < legalMoves.length; i++) {
-//					if (legalMoves[i].fromCol == selectedCol
-//							&& legalMoves[i].fromRow == selectedRow) {
-//						g.drawRect(2 + legalMoves[i].toCol * 20,
-//								2 + legalMoves[i].toRow * 20, 19, 19);
-//						g.drawRect(3 + legalMoves[i].toCol * 20,
-//								3 + legalMoves[i].toRow * 20, 17, 17);
-//					}
-//				}
-//			}
-//		}
-
 	} // end paintComponent()
 	
 	private void simulateMouseClick(){
@@ -273,7 +222,6 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 			}	
 		}catch(BoardComponentNotFoundException bcnfe){
 			System.err.println(bcnfe.getMessage());
-			
 		}
 		
 		
@@ -308,54 +256,16 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	    			System.out.println("valid moves found at positions -- " + validMoves.get(i).getCoordinate().toString());
 	    		}
 	    	}
-//	    	}else if( !validMoves.isEmpty() && validSelection(bc) ){
-//	        	for(int i = 0; i < validMoves.size(); i++){
-//	        		validMoves.get(i).setHighlight(false);
-//	        		validMoves.get(i).setStackable(false);
-//	        	}
-//	    	}
     	}
        	
        board.getCoordinateOfId(bc.getId());
        board.getBoardComponentAtId(bc.getId());
        repaint();
-       /* If the player clicked on one of the pieces that the player
-        can move, mark this row and col as selected and return.  (This
-        might change a previous selection.)  Reset the message, in
-        case it was previously displaying an error message. */
-       
-//       for (int i = 0; i < legalMoves.length; i++)
-//          if (legalMoves[i].fromRow == row && legalMoves[i].fromCol == col) {
-//             selectedRow = row;
-//             selectedCol = col;
-//             repaint();
-//             return;
-//          }
-       
-       
-       /* If the user clicked on a square where the selected piece can be
-        legally moved, then make the move and return. */
-       
-//       for (int i = 0; i < legalMoves.length; i++)
-//          if (legalMoves[i].fromRow == selectedRow && legalMoves[i].fromCol == selectedCol
-//                && legalMoves[i].toRow == row && legalMoves[i].toCol == col) {
-////             doMakeMove(legalMoves[i]);
-//             return;
-//          }
-       
-       /* If we get to this point, there is a piece selected, and the square where
-        the user just clicked is not one where that piece can be legally moved.
-        Show an error message. */
-       
-       
+              
     }  // end doClickSquare()
     
     private void makeMove(int row, int col){
-//    	for(int i = 0; i < validMoves.size(); i++){
-//    		validMoves.get(i).setHighlight(false);
-//    		validMoves.get(i).setStackable(false);
-//    	}
-    	System.out.println("doClickSquare");
+    	System.out.println("makeMove");
     	BoardComponent bc = board.pieceAt(row, col);
     	BoardComponent selectedBc = board.getSelectedBoardComponent();
     	if(!bc.isOccupied() && bc.getLocation() != Location.OUT_OF_BOUNDS){
@@ -370,13 +280,42 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     			//characters are on opposite teams
     		}
     	}
-    	
     	selectedBc.setSelected(false);
     	repaint();
     }
     
-    private void stackUnits(int row, int col){
+    private boolean stackUnits(int row, int col){
     	System.out.println("stack units");
+    	BoardComponent bc = board.pieceAt(row, col);
+    	BoardComponent selectedBc = board.getSelectedBoardComponent();
+    	Player p = selectedBc.getCharacter().getPlayer();
+    	if( bc.isOccupied() && selectedBc.isOccupied() ){ //make sure both are occupied
+    		if( bc.getCharacter().getPlayer() == p ){ //and belong to the same player
+    			if( !(bc.getCharacter().getRank() == Ranks.LEVEL_THREE || selectedBc.getCharacter().getRank() == Ranks.LEVEL_THREE) ){ //&& //not level three 
+    					if( !(bc.getCharacter().getRank() == Ranks.LEVEL_TWO && selectedBc.getCharacter().getRank() == Ranks.LEVEL_TWO) ){// ){ //or both are not level two
+    				if( bc.getCharacter().getRank() != Ranks.TAICHO && selectedBc.getCharacter().getRank() != Ranks.TAICHO ){			//neither are a taicho
+    					MovableObject selectedChar = selectedBc.removeCharachter();
+    					MovableObject joiningChar = bc.removeCharachter();
+    					MovableObject newChar = new EmptyObject();
+    					if( selectedChar.getRank() == Ranks.LEVEL_ONE && joiningChar.getRank() == Ranks.LEVEL_ONE ){
+    						newChar = new TwoUnit(p, selectedChar, joiningChar);
+    					}else if( (selectedChar.getRank() == Ranks.LEVEL_ONE && joiningChar.getRank() == Ranks.LEVEL_TWO) ||
+    							(selectedChar.getRank() == Ranks.LEVEL_TWO && joiningChar.getRank() == Ranks.LEVEL_ONE) ){
+    						newChar = new ThreeUnit(p, selectedChar, joiningChar);
+    					}
+    					bc.setCharacter(newChar);
+    					selectedBc.setSelected(false);
+    					repaint();
+    					return true;
+    				}
+    			}
+    			}
+    		}
+    	}else{
+    		return false;
+    	}
+    	repaint();
+    	return false;    	
     }
     
     private boolean validSelection(BoardComponent bc){

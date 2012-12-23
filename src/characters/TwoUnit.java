@@ -1,11 +1,13 @@
 package characters;
 
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 import basecomponents.MovableObject;
 import enums.Player;
 import enums.Ranks;
+import gameparts.Utils;
 
 public class TwoUnit extends MovableObject {
 
@@ -20,6 +22,18 @@ public class TwoUnit extends MovableObject {
 		components = new ArrayList<MovableObject>();
 		components.add(comp1);
 		components.add(comp2);
+	}
+	
+	@Override
+	public Color getColor(){
+//		Color c = Color.RED;
+//		if( this.player == Player.PLAYER_ONE ){
+//			c = Color.ORANGE;
+//		}else if( this.player == Player.PLAYER_TWO ){
+//			c = Color.GREEN;
+//		}
+//		return c;
+		return Utils.blendColor(this.getPlayer().getColor(), Color.DARK_GRAY, 0.5);// (, 70);
 	}
 
 //	@Override
