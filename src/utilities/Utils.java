@@ -1,7 +1,11 @@
-package gameparts;
+package utilities;
 
 import java.awt.Color;
 
+/**
+ * Class i found online, used to to blend colors for different level units 
+ *
+ */
 public class Utils {
 	 /**
 	   * Blend two colors.

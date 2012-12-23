@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import utilities.BoardDimensions;
+
 import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
 import characters.EmptyObject;
@@ -19,6 +21,10 @@ import enums.Player;
 import enums.Ranks;
 import exceptions.BoardComponentNotFoundException;
 
+/**
+ * UI for game. Deals with how the game program interfaces with the user
+ *
+ */
 public class Board extends JPanel implements ActionListener, MouseListener {
 	
 	/**
@@ -53,7 +59,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		System.out.println("Board constructor");
 		board = null;
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(90);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
+		boardProperties = new BoardDimensions(45);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 //		game = taicho;
 		setBackground(Color.BLACK);
 		addMouseListener(this);
@@ -247,9 +253,9 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	    		bc.setSelected(true);
 	    		System.out.println("you clicked BoardComponent with ID of -- " + bc.getId());
 	    		validMoves = bc.getCharacter().getPossibleMoves(board, bc);
-	    		for(int i = 0; i < validMoves.size(); i++){
-	    			System.out.println("valid moves found at positions -- " + validMoves.get(i).getCoordinate().toString());
-	    		}
+//	    		for(int i = 0; i < validMoves.size(); i++){
+//	    			System.out.println("valid moves found at positions -- " + validMoves.get(i).getCoordinate().toString());
+//	    		}
 	    	}
     	}
        	

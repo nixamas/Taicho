@@ -1,5 +1,11 @@
 package basecomponents;
 
+/**
+ * Every Board Component on the board will contain a coordinate object. 
+ * Look in the board.xls file for the board layout.
+ * @author Ryan
+ *
+ */
 public class Coordinate {
 	private int id;
 	private final int posX, posY;

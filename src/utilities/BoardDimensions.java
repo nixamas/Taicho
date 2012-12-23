@@ -1,15 +1,15 @@
-package gameparts;
+package utilities;
 
 public class BoardDimensions {
-	private int COMPONENT_DIMENSION;
-	private int CHARACTER_DIMENSION;
-	private int BOARD_LENGTH;
-	private int BOARD_WIDTH;
+	private final int COMPONENT_DIMENSION;
+	private final int CHARACTER_DIMENSION;
+	private final int BOARD_LENGTH;
+	private final int BOARD_WIDTH;
 	
 	private int initialDimension = 20;
 	
 	public BoardDimensions(int i){
-		if( i < 20 ){
+		if( i > 20 ){
 			this.initialDimension = i;
 		}
 		this.COMPONENT_DIMENSION = this.initialDimension;

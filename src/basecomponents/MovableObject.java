@@ -1,5 +1,7 @@
 package basecomponents;
 
+import interfaces.MoveManager;
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -7,13 +9,18 @@ import enums.LevelOneLegalMoves;
 import enums.LevelThreeLegalMoves;
 import enums.LevelTwoLegalMoves;
 import enums.Location;
-import enums.MoveManager;
 import enums.Player;
 import enums.Ranks;
 import exceptions.BoardComponentNotFoundException;
 import gameparts.TaichoGameData;
 
-
+/**
+ * All Characters will extend this object. 
+ * Extended by OneUnit.java, TwoUnit.java, ThreeUnit.java, Taicho.java, EmptyObject.java
+ * The getPossibleMoves method is used for all characters
+ * @author Ryan
+ *
+ */
 public abstract class MovableObject {
 	
 	protected int combatValue;
@@ -24,6 +31,26 @@ public abstract class MovableObject {
 	public MovableObject(Player p, Ranks r) {
 		player = p;
 		rank = r;
+		switch(rank){
+		case NONE:
+			this.combatValue = -1;
+			break;
+		case LEVEL_ONE:
+			this.combatValue = 1;
+			break;
+		case LEVEL_TWO:
+			this.combatValue = 2;
+			break;
+		case LEVEL_THREE:
+			this.combatValue = 3;
+			break;
+		case TAICHO:
+			this.combatValue = 1;
+			break;
+		default:
+			this.combatValue = -1;
+			break;
+	}
 	}
 
 	public int getCombatValue(){
@@ -158,6 +185,12 @@ public abstract class MovableObject {
 			}	
 		}//end for loop
 		return legalMoves;
+	}
+
+	@Override
+	public String toString() {
+		return "MovableObject [combatValue=" + combatValue + ", player="
+				+ player + ", rank=" + rank + "]";
 	}
 	
 }

@@ -1,6 +1,10 @@
 package basecomponents;
 
-
+/**
+ * class containing a start and finish coordinate
+ * @author Ryan
+ *
+ */
 public class ObjectMove {
 	Coordinate start;
 	Coordinate finish;

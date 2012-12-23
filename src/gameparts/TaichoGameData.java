@@ -10,7 +10,19 @@ import enums.Location;
 import enums.Player;
 import exceptions.BoardComponentNotFoundException;
 
-
+/**
+ * Controls the game data dealing with the board
+ * 
+ * Functions:
+ * 		pieceAt(int row, int col)
+ * 		getCoordinateOfId(int id)
+ * 		getBoardComponentAtId(int id)
+ * 		getSelectedBoardComponent()
+ * 		isWithinBufferZone(int bufferZone, BoardComponent bc, BoardComponent pbc)
+ * 		getCastleBoardComponents(Player p)
+ * @author Ryan
+ *
+ */
 public class TaichoGameData {
 	BoardComponent[][] board;
 	Player player1, player2;
@@ -74,7 +86,7 @@ public class TaichoGameData {
 						board[row][col].setColor(Color.GRAY);
 					}
 				}else{
-					board[row][col].setColor(Color.WHITE);
+					board[row][col].setColor(Color.BLACK);
 				}
 				index++;
 			}
@@ -135,10 +147,10 @@ public class TaichoGameData {
 		Coordinate potentialCoor = potentialBc.getCoordinate();
 		if( (( potentialCoor.getPosY() <= (selectedCoor.getPosY() + bufferZone) ) && ( potentialCoor.getPosY() >= (selectedCoor.getPosY() - bufferZone))) &&
 				(( potentialCoor.getPosX() <= (selectedCoor.getPosX() + bufferZone) ) && ( potentialCoor.getPosX() >= (selectedCoor.getPosX() - bufferZone))) ){
-			System.out.println(potentialCoor.toString() + " - found whithin bufferzone of - " + selectedCoor);
+//			System.out.println(potentialCoor.toString() + " - found whithin bufferzone of - " + selectedCoor);
 			return true;
 		}else{
-			System.err.println("WARNING: " + potentialCoor.toString() + " - was not found whithin bufferzone of - " + selectedCoor);
+//			System.err.println("WARNING: " + potentialCoor.toString() + " - was not found whithin bufferzone of - " + selectedCoor);
 			return false;
 		}
 	}

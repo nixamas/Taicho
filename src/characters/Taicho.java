@@ -2,10 +2,11 @@ package characters;
 
 import java.awt.Color;
 
+import utilities.Utils;
+
 import basecomponents.MovableObject;
 import enums.Player;
 import enums.Ranks;
-import gameparts.Utils;
 
 public class Taicho extends MovableObject {
 

@@ -5,7 +5,14 @@ import characters.EmptyObject;
 import enums.Location;
 import enums.Player;
 
-
+/**
+ * Each square on the board is made of its own BoardComponent. 
+ * BoardComponent will hold the character if it is occupied. 
+ * Each BC will have a coordinate that corresponds to a position of the board and 
+ * 		an index value which can be seen in the board.xls file.
+ * @author Ryan
+ *
+ */
 public class BoardComponent {
 
 	private final Coordinate coordinate;
@@ -101,7 +108,7 @@ public class BoardComponent {
 	public String toString() {
 		return "BoardComponent [coordinate=" + coordinate + ", location="
 				+ location + ", color=" + color + ", occupied=" + occupied
-				+ ", highlight=" + highlight + "]";
+				+ "\n\t" + "highlight=" + highlight + ", character=" + character + "]";
 	}
 	@Override
 	public int hashCode() {

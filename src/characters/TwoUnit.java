@@ -4,10 +4,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import utilities.Utils;
+
 import basecomponents.MovableObject;
 import enums.Player;
 import enums.Ranks;
-import gameparts.Utils;
 
 public class TwoUnit extends MovableObject {
 

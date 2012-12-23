@@ -58,17 +58,13 @@ public class ProgramMain extends JPanel {
 	public ProgramMain() {
 		System.out.println("Taicho constructor");
 		setLayout(null); // I will do the layout myself.
+
+		this.setBackground(Color.BLACK); // Black background.
+
+		Board board = new Board();	//create a new game board
+										//inside the constructor there is a value to set the size of the window
 		
-
-		this.setBackground(Color.BLACK); // Dark green background.
-
-		/* Create the components and add them to the applet. */
-
-		Board board = new Board(); // Note: The constructor for the
-							// board also creates the buttons
-							// and label.
-		
-		setPreferredSize(new Dimension(board.getBoardProperties().getBoardLength()+30, board.getBoardProperties().getBoardWidth()+30));
+		setPreferredSize(new Dimension(board.getBoardProperties().getBoardLength()+10, board.getBoardProperties().getBoardWidth()+100));
 				
 		System.err.println("b4 adding board");
 		add(board);
@@ -79,7 +75,7 @@ public class ProgramMain extends JPanel {
 		 * setBounds() method.
 		 */
 
-		board.setBounds(10, 10, board.getBoardProperties().getBoardLength() + 100, board.getBoardProperties().getBoardWidth() + 100); // Note: size MUST be 164-by-164 !
+		board.setBounds(10, 10, board.getBoardProperties().getBoardLength(), board.getBoardProperties().getBoardWidth()); // Note: size MUST be 164-by-164 !
 //		message.setBounds(0, 200, 350, 30);
 
 	} // end constructor
