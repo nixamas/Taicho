@@ -1,24 +1,29 @@
 package gameparts;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import net.coobird.thumbnailator.Thumbnails;
 import utilities.BoardDimensions;
 import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
 import characters.EmptyObject;
 import characters.ThreeUnit;
 import characters.TwoUnit;
+import enums.ComponentImages;
 import enums.Location;
 import enums.Player;
 import enums.Ranks;
@@ -28,7 +33,7 @@ import exceptions.BoardComponentNotFoundException;
  * UI for game. Deals with how the game program interfaces with the user
  *
  */
-public class Board extends JPanel implements ActionListener, MouseListener {
+public class Board extends JPanel implements ActionListener, MouseListener, ImageObserver {
 	
 	/**
 	 * 
@@ -145,6 +150,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	 */
 	public void paintComponent(Graphics g) {
 
+		
 		/* Draw a two-pixel black border around the edges of the canvas. */
 		System.out.println("Paint components");
 		g.setColor(currentPlayer.getColor()); 		
@@ -158,7 +164,23 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 //		g.drawRect(1, 1, getSize().width - 3, getSize().height - 3);
 		g.drawRect(0, 0, bL - 1, bW - 1);
 		g.drawRect(1, 1, bL - 3, bW - 3);
-
+		
+		try {
+			Thumbnails.of(new File(ComponentImages.LEVEL_ONE_IMAGE.getImageLocation()))
+			.size(160, 160)
+			.toFile(new File("thumbnails/" + "LVL1"));
+			Thumbnails.of(new File(ComponentImages.LEVEL_TWO_IMAGE.getImageLocation()))
+	        .size(160, 160)
+	        .toFile(new File("thumbnails/" + "LVL2"));
+			Thumbnails.of(new File(ComponentImages.LEVEL_THREE_IMAGE.getImageLocation()))
+	        .size(160, 160)
+	        .toFile(new File("thumbnails/" + "LVL3"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
 		/* Draw the squares of the checkerboard and the checkers. */
 		for (int col = 0; col < 15; col++) {
 			for (int row = 0; row < 9; row++) {
@@ -177,12 +199,26 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 					if(bc.isOccupied()){
 						g.setColor(bc.getCharacter().getColor());
 						g.fillOval(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
-//						String imgLoc = bc.getCharacter().getImageLocation().getImageLocation();
-//						ImageIcon image = new ImageIcon( imgLoc );
-//						JLabel label = new JLabel("", image, JLabel.CENTER);
+						String imgLoc = bc.getCharacter().getImageLocation().getImageLocation();
+						ImageIcon image = new ImageIcon( imgLoc );
+						JLabel label = new JLabel("", image, JLabel.CENTER);
 //						JPanel panel = new JPanel(new BorderLayout());
 //						panel.add( label, BorderLayout.CENTER );
+//						this.add(label);
+						BufferedImage myPicture;
+						try {
+							myPicture = ImageIO.read(new File( imgLoc ));
+							JLabel picLabel = new JLabel(new ImageIcon( myPicture ));
+							add( picLabel );
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						
+//						Thumbails t = Thumbnails.
+//						g.drawImage(image, col, row, compSize, compSize, (ImageObserver)null);
+						
+//						g.dra
 					}
 				}else{
 					g.setColor(bc.getColor());
