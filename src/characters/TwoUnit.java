@@ -7,6 +7,7 @@ import java.util.List;
 import utilities.Utils;
 
 import basecomponents.MovableObject;
+import enums.ComponentImages;
 import enums.Player;
 import enums.Ranks;
 
@@ -15,11 +16,11 @@ public class TwoUnit extends MovableObject {
 	List<MovableObject> components;
 	
 	public TwoUnit(Player p) {
-		super(p, Ranks.LEVEL_TWO);
+		super(p, Ranks.LEVEL_TWO, ComponentImages.LEVEL_TWO_IMAGE);
 	}
 	
 	public TwoUnit(Player p, MovableObject comp1, MovableObject comp2){
-		super(p, Ranks.LEVEL_TWO);
+		super(p, Ranks.LEVEL_TWO, ComponentImages.LEVEL_TWO_IMAGE);
 		components = new ArrayList<MovableObject>();
 		components.add(comp1);
 		components.add(comp2);

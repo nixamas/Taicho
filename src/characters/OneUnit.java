@@ -1,13 +1,14 @@
 package characters;
 
 import basecomponents.MovableObject;
+import enums.ComponentImages;
 import enums.Player;
 import enums.Ranks;
 
 public class OneUnit extends MovableObject {
 	
 	public OneUnit(Player p) {
-		super(p, Ranks.LEVEL_ONE);
+		super(p, Ranks.LEVEL_ONE, ComponentImages.LEVEL_ONE_IMAGE);
 	}
 
 

@@ -5,6 +5,7 @@ import interfaces.MoveManager;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import enums.ComponentImages;
 import enums.LevelOneLegalMoves;
 import enums.LevelThreeLegalMoves;
 import enums.LevelTwoLegalMoves;
@@ -26,11 +27,12 @@ public abstract class MovableObject {
 	protected int combatValue;
 	protected Player player;
 	protected Ranks rank;
+	protected final ComponentImages imageLocation;
 	
-	
-	public MovableObject(Player p, Ranks r) {
+	public MovableObject(Player p, Ranks r, ComponentImages ci) {
 		player = p;
 		rank = r;
+		this.imageLocation = ci;
 		switch(rank){
 		case NONE:
 			this.combatValue = -1;
@@ -97,6 +99,10 @@ public abstract class MovableObject {
 				break;
 		}
 		this.rank = rank;
+	}
+
+	public ComponentImages getImageLocation() {
+		return imageLocation;
 	}
 
 	//	public abstract void setPlayer(Player p);

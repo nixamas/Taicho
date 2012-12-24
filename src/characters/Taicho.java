@@ -5,13 +5,14 @@ import java.awt.Color;
 import utilities.Utils;
 
 import basecomponents.MovableObject;
+import enums.ComponentImages;
 import enums.Player;
 import enums.Ranks;
 
 public class Taicho extends MovableObject {
 
 	public Taicho(Player p) {
-		super(p, Ranks.TAICHO);
+		super(p, Ranks.TAICHO, ComponentImages.TAICHO_IMAGE);
 	}
 	
 	@Override

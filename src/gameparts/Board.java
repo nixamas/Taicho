@@ -1,16 +1,19 @@
 package gameparts;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import utilities.BoardDimensions;
-
 import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
 import characters.EmptyObject;
@@ -174,6 +177,12 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 					if(bc.isOccupied()){
 						g.setColor(bc.getCharacter().getColor());
 						g.fillOval(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
+//						String imgLoc = bc.getCharacter().getImageLocation().getImageLocation();
+//						ImageIcon image = new ImageIcon( imgLoc );
+//						JLabel label = new JLabel("", image, JLabel.CENTER);
+//						JPanel panel = new JPanel(new BorderLayout());
+//						panel.add( label, BorderLayout.CENTER );
+						
 					}
 				}else{
 					g.setColor(bc.getColor());

@@ -7,6 +7,7 @@ import java.util.List;
 import utilities.Utils;
 
 import basecomponents.MovableObject;
+import enums.ComponentImages;
 import enums.Player;
 import enums.Ranks;
 
@@ -15,12 +16,12 @@ public class ThreeUnit extends MovableObject {
 	List<MovableObject> components;
 	
 	public ThreeUnit(Player p) {
-		super(p, Ranks.LEVEL_THREE);
+		super(p, Ranks.LEVEL_THREE, ComponentImages.LEVEL_THREE_IMAGE);
 		combatValue = 3;
 	}
 	
 	public ThreeUnit(Player p, MovableObject comp1, MovableObject comp2, MovableObject comp3){
-		super(p, Ranks.LEVEL_THREE);
+		super(p, Ranks.LEVEL_THREE, ComponentImages.LEVEL_THREE_IMAGE);
 		components = new ArrayList<MovableObject>();
 		components.add(comp1);
 		components.add(comp2);
@@ -29,7 +30,7 @@ public class ThreeUnit extends MovableObject {
 	}
 	
 	public ThreeUnit(Player p, MovableObject comp1, MovableObject comp2){
-		super(p, Ranks.LEVEL_THREE);
+		super(p, Ranks.LEVEL_THREE, ComponentImages.LEVEL_THREE_IMAGE);
 		components = new ArrayList<MovableObject>();
 		components.add(comp1);
 		components.add(comp2);
