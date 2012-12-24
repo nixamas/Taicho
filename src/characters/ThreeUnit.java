@@ -55,7 +55,7 @@ public class ThreeUnit extends MovableObject {
 //			c = Color.DARK_GRAY;
 //		}
 //		return c;
-		return Utils.blendColor(this.getPlayer().getColor(), Color.BLACK, 0.5);
+		return Utils.blendColor(this.getPlayer().getColor(), Color.DARK_GRAY, 0.4);
 	}
 	
 //	@Override

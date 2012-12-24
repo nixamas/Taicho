@@ -34,7 +34,7 @@ public class TwoUnit extends MovableObject {
 //			c = Color.GREEN;
 //		}
 //		return c;
-		return Utils.blendColor(this.getPlayer().getColor(), Color.DARK_GRAY, 0.4);// (, 70);
+		return Utils.blendColor(this.getPlayer().getColor(), Color.GRAY, 0.4);// (, 70);
 	}
 
 //	@Override

@@ -59,7 +59,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		System.out.println("Board constructor");
 		board = null;
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(60);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
+		boardProperties = new BoardDimensions(30);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 //		game = taicho;
 		setBackground(Color.BLACK);
 		addMouseListener(this);
@@ -209,12 +209,14 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 			System.err.println("************* BOARD SQUARE DATE *************");
 	    	System.err.println("" + bc.toString());
 	    	System.err.println("************* BOARD SQUARE DATE *************");
+	    	
+	    	
 			if(bc.getLocation() != Location.OUT_OF_BOUNDS){
 				if(validMoves.isEmpty()){
 					System.out.println("valid moves is empty, first click");
 					doClickSquare(row, col);
 					currentPlayer = bc.getCharacter().getPlayer();
-				}else if( validSelection(bc) ){
+				}else if( !validMoves.isEmpty() && validSelection(bc) ){
 					System.out.println("make move to new VALID square");
 					if(bc.isOccupied()){
 						stackUnits(row, col);
@@ -226,13 +228,29 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 			    		validMoves.get(i).setStackable(false);
 			    	}
 			    	validMoves.clear();
+				}else{
+					System.out.println("checking if user clicked selected BC again. If so, Abort");
+					try{
+			    		BoardComponent selectedBc = board.getSelectedBoardComponent();
+			    		if(bc.getCoordinate().equals( selectedBc.getCoordinate() )){
+			    				//if there is a selected BC then and the user clicked it a second time, 
+			    					//Then clear the valid moves array
+			    			for(int i = 0; i < validMoves.size(); i++){
+					    		validMoves.get(i).setHighlight(false);
+					    		validMoves.get(i).setStackable(false);
+					    	}
+					    	validMoves.clear();
+			    		}
+			    	}catch(BoardComponentNotFoundException bcnfe){
+			    		System.err.println(bcnfe.getMessage());
+			    	}
 				}
 			}	
 		}catch(BoardComponentNotFoundException bcnfe){
 			System.err.println(bcnfe.getMessage());
 		}
 		
-		
+		repaint();
 	}
 
 	public void mouseReleased(MouseEvent evt) {
@@ -260,18 +278,19 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	    		bc.setSelected(true);
 	    		System.out.println("you clicked BoardComponent with ID of -- " + bc.getId());
 	    		validMoves = bc.getCharacter().getPossibleMoves(board, bc);
-//	    		for(int i = 0; i < validMoves.size(); i++){
-//	    			System.out.println("valid moves found at positions -- " + validMoves.get(i).getCoordinate().toString());
-//	    		}
 	    	}
     	}
        	
        board.getCoordinateOfId(bc.getId());
        board.getBoardComponentAtId(bc.getId());
        repaint();
-              
     }  // end doClickSquare()
-    
+       
+    /**
+     * Move units from one BC to another. params are coordinates of new location. 
+     * @param row
+     * @param col
+     */
     private void makeMove(int row, int col){
     	System.out.println("makeMove");
     	BoardComponent bc = board.pieceAt(row, col);
@@ -280,13 +299,6 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     		System.out.println("square IS NOT occupied");
     		MovableObject temp = selectedBc.removeCharachter();
     		bc.setCharacter( temp );
-    	}else if( bc.isOccupied() ){
-    		System.out.println("square IS occupied");
-    		if(bc.getCharacter().getPlayer() == selectedBc.getCharacter().getPlayer()){
-    			//characters are on the same team
-    		}else if(bc.getCharacter().getPlayer() != selectedBc.getCharacter().getPlayer()){
-    			//characters are on opposite teams
-    		}
     	}
     	selectedBc.setSelected(false);
     	repaint();
@@ -326,6 +338,11 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     	return false;    	
     }
     
+    /**
+     * if the param bc coordinate member is equal to a coordinate in the valid moves array return true, else false
+     * @param bc
+     * @return
+     */
     private boolean validSelection(BoardComponent bc){
 //    	System.out.println("find if " + bc.getCoordinate().toString() + "  is valid");
     	for(BoardComponent vbc : validMoves){
