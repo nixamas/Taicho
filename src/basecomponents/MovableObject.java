@@ -104,7 +104,29 @@ public abstract class MovableObject {
 	public ComponentImages getImageLocation() {
 		return imageLocation;
 	}
-
+	
+	public ArrayList<BoardComponent> getPossibleUnstackLocations(TaichoGameData board, BoardComponent bc){
+		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
+		ArrayList<MoveManager> mm = new ArrayList<MoveManager>();
+		LevelOneLegalMoves[] l1moves = LevelOneLegalMoves.values();
+		for(int i = 0; i < LevelOneLegalMoves.values().length; i++){
+			mm.add(l1moves[i]);
+		}
+		for(int i = 0; i < mm.size(); i++){
+			int changeVal = mm.get(i).getMove(i);
+			try{
+				BoardComponent potentialPosition = board.getBoardComponentAtId(bc.getId() + changeVal);
+				if( !potentialPosition.isOccupied() && potentialPosition.getLocation() != Location.OUT_OF_BOUNDS ){
+					potentialPosition.setHighlight(true);
+					legalMoves.add(potentialPosition);
+				}
+			}catch(BoardComponentNotFoundException bcnfe){
+				System.err.println(bcnfe.getMessage());
+			}
+		}
+		return legalMoves;
+	}
+	
 	//	public abstract void setPlayer(Player p);
 //	public abstract Player getPlayer();
 	public ArrayList<BoardComponent> getPossibleMoves(TaichoGameData board, BoardComponent bc){

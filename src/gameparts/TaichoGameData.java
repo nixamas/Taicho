@@ -8,6 +8,7 @@ import characters.Taicho;
 import characters.OneUnit;
 import enums.Location;
 import enums.Player;
+import enums.TaichoColors;
 import exceptions.BoardComponentNotFoundException;
 
 /**
@@ -81,9 +82,9 @@ public class TaichoGameData {
 				}
 				if(board[row][col].getLocation() != Location.OUT_OF_BOUNDS){
 					if (row % 2 == col % 2) {
-						board[row][col].setColor(Color.LIGHT_GRAY);
+						board[row][col].setColor(TaichoColors.GAME_BOARD_LIGHT.getColor());
 					} else {
-						board[row][col].setColor(Color.GRAY);
+						board[row][col].setColor(TaichoColors.GAME_BOARD_DARK.getColor());
 					}
 				}else{
 					board[row][col].setColor(Color.BLACK);

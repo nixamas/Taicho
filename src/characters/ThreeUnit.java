@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utilities.Utils;
-
 import basecomponents.MovableObject;
 import enums.ComponentImages;
 import enums.Player;
 import enums.Ranks;
+import enums.TaichoColors;
 
 public class ThreeUnit extends MovableObject {
 
@@ -32,9 +32,25 @@ public class ThreeUnit extends MovableObject {
 	public ThreeUnit(Player p, MovableObject comp1, MovableObject comp2){
 		super(p, Ranks.LEVEL_THREE, ComponentImages.LEVEL_THREE_IMAGE);
 		components = new ArrayList<MovableObject>();
-		components.add(comp1);
-		components.add(comp2);
+		ArrayList<MovableObject> tempList;
+		if(comp1.getRank() == Ranks.LEVEL_TWO){
+			TwoUnit tempUnit = (TwoUnit) comp1;
+			tempList = tempUnit.getComponents();
+			components.add(tempList.get(0));
+			components.add(tempList.get(1));
+			components.add(comp2);
+		}else if(comp2.getRank() == Ranks.LEVEL_TWO){
+			TwoUnit tempUnit = (TwoUnit) comp2;
+			tempList = tempUnit.getComponents();
+			components.add(tempList.get(0));
+			components.add(tempList.get(1));
+			components.add(comp1);
+		}
 		combatValue = 3;
+	}
+	
+	public ArrayList<MovableObject> getComponents(){
+		return (ArrayList) this.components;
 	}
 	
 	@Override
@@ -49,14 +65,19 @@ public class ThreeUnit extends MovableObject {
 
 	@Override
 	public Color getColor(){
-//		Color c = Color.RED;
-//		if( this.player == Player.PLAYER_ONE ){
-//			c = Color.YELLOW;
-//		}else if( this.player == Player.PLAYER_TWO ){
-//			c = Color.DARK_GRAY;
-//		}
-//		return c;
-		return Utils.blendColor(this.getPlayer().getColor(), Color.DARK_GRAY, 0.4);
+		if( this.player == Player.PLAYER_ONE ){
+			return TaichoColors.PLAYER_ONE_LVL3.getColor();
+		}else if( this.player == Player.PLAYER_TWO ){
+			return TaichoColors.PLAYER_TWO_LVL3.getColor();
+		}else{
+			return Color.WHITE;
+		}
+//		return Utils.blendColor(this.getPlayer().getColor(), Color.DARK_GRAY, 0.4);
+	}
+	
+	public MovableObject removeUnitFromStack(){
+			//remove last unit in array from list
+		return this.components.remove( this.components.size() - 1 );
 	}
 	
 //	@Override

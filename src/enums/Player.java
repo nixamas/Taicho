@@ -15,17 +15,16 @@ public enum Player {
 		}
 	},
 	PLAYER_ONE{
-		Color color = Color.RED;
+		Color color = TaichoColors.PLAYER_ONE_LVL1.getColor();
 		public void setColor(Color col){
 			color = col;
 		}
 		public Color getColor(){
-			color = Color.RED;
 			return color;
 		}
 	},
 	PLAYER_TWO{
-		Color color = Color.BLUE;
+		Color color = TaichoColors.PLAYER_TWO_LVL1.getColor();
 		public void setColor(Color col){
 			color = col;
 		}

@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utilities.Utils;
-
 import basecomponents.MovableObject;
 import enums.ComponentImages;
 import enums.Player;
 import enums.Ranks;
+import enums.TaichoColors;
 
 public class TwoUnit extends MovableObject {
 
@@ -26,16 +26,25 @@ public class TwoUnit extends MovableObject {
 		components.add(comp2);
 	}
 	
+	public ArrayList<MovableObject> getComponents(){
+		return (ArrayList) this.components;
+	}
+	
+	public MovableObject removeUnitFromStack(){
+			//remove last unit in array from list
+		return this.components.remove( this.components.size() - 1 );
+	}
+	
 	@Override
 	public Color getColor(){
-//		Color c = Color.RED;
-//		if( this.player == Player.PLAYER_ONE ){
-//			c = Color.ORANGE;
-//		}else if( this.player == Player.PLAYER_TWO ){
-//			c = Color.GREEN;
-//		}
-//		return c;
-		return Utils.blendColor(this.getPlayer().getColor(), Color.GRAY, 0.4);// (, 70);
+		if( this.player == Player.PLAYER_ONE ){
+			return TaichoColors.PLAYER_ONE_LVL2.getColor();
+		}else if( this.player == Player.PLAYER_TWO ){
+			return TaichoColors.PLAYER_TWO_LVL2.getColor();
+		}else{
+			return Color.WHITE;
+		}
+//		return Utils.blendColor(this.getPlayer().getColor(), Color.GRAY, 0.4);// (, 70);
 	}
 
 //	@Override

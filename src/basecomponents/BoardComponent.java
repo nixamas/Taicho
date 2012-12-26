@@ -4,6 +4,7 @@ import java.awt.Color;
 import characters.EmptyObject;
 import enums.Location;
 import enums.Player;
+import enums.TaichoColors;
 
 /**
  * Each square on the board is made of its own BoardComponent. 
@@ -54,7 +55,7 @@ public class BoardComponent {
 	public void setCharacter(MovableObject character) {
 		this.character = character;
 	}
-	public MovableObject removeCharachter(){
+	public MovableObject removeCharacter(){
 		MovableObject tempChar= this.character;
 		this.character = new EmptyObject();
 		return tempChar;
@@ -75,10 +76,12 @@ public class BoardComponent {
 //		this.coordinate = coordinate;
 //	}
 	public Color getColor() {
-		if(highlight){
-			return Color.MAGENTA;
+		if(selected){
+			return TaichoColors.GAME_BOARD_SELECTED.getColor();
+		}else if(highlight){
+			return TaichoColors.GAME_BOARD_HIGHLIGHT.getColor();
 		}else if(stackable){
-			return Color.GREEN;
+			return TaichoColors.GAME_BOARD_STACKABLE.getColor();
 		}else{
 			return color;
 		}

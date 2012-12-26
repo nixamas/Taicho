@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -26,6 +27,8 @@ public class ProgramMain extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	
+	private static JButton unstackBtn;
 
 	/**
 	 * Main routine makes it possible to run Checkers as a stand-alone
@@ -60,8 +63,10 @@ public class ProgramMain extends JPanel {
 		setLayout(null); // I will do the layout myself.
 
 		this.setBackground(Color.BLACK); // Black background.
+		
+		unstackBtn = new JButton("Un-Stack");
 
-		Board board = new Board();	//create a new game board
+		Board board = new Board(unstackBtn);	//create a new game board
 										//inside the constructor there is a value to set the size of the window
 		
 		setPreferredSize(new Dimension(board.getBoardProperties().getBoardLength()+10, board.getBoardProperties().getBoardWidth()+100));
@@ -69,7 +74,10 @@ public class ProgramMain extends JPanel {
 		System.err.println("b4 adding board");
 		add(board);
 		System.err.println("after adding board");
-
+		
+//		unstackBtn.setText("HELLO");
+		add(unstackBtn);
+		unstackBtn.setBounds(10, board.getBoardProperties().getBoardWidth()+20, 100, 50);
 		/*
 		 * Set the position and size of each component by calling its
 		 * setBounds() method.
