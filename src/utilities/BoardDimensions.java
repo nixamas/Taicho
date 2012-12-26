@@ -17,7 +17,7 @@ public class BoardDimensions {
 		this.COMPONENT_DIMENSION = this.initialDimension;
 		this.BOARD_LENGTH = (this.initialDimension * 15 + 4);
 		this.BOARD_WIDTH = (this.initialDimension * 9 + 4);
-		this.CHARACTER_DIMENSION = (this.initialDimension - 10); //5
+		this.CHARACTER_DIMENSION = (int)(this.initialDimension * 0.65);//- 10); //5
 		this.CHARACTER_OFFSET = ((this.COMPONENT_DIMENSION - this.CHARACTER_DIMENSION) / 2);
 		
 		if( ( i/10 ) < 2){

@@ -81,9 +81,10 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		showIcons = false;
+		
 		validMoves = new ArrayList<BoardComponent>();
 		boardProperties = new BoardDimensions(45);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
+		showIcons = false;								/// 		<<<<<<<<<<<<<<<<<<<< SET TRUE FOR IMAGE ICONS INSTEAD OF SHAPES
 		setBackground(Color.BLACK);
 		addMouseListener(this);
 		currentPlayer = Player.NONE;
@@ -93,9 +94,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 		player2 = Player.PLAYER_TWO;
 		board = new TaichoGameData(player1, player2);
 		selectedBC = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(-1, -1, -1));
-		
-//		simulateMouseClick();
-		
 		setButtonState();
 		unstackObjects = false;
 	}
@@ -170,8 +168,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 								default:
 									break;
 							}
-							
-							g.drawImage(icon, 2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize - 15, charSize - 15, null);
+							int offset = ( charSize - 7 ) / 2;
+							g.drawImage(icon,  2 + charOffset + col * compSize,  2 + charOffset + row * compSize, charSize - 7, charSize - 7, null);
 						}else{
 							g.setColor(bc.getCharacter().getColor());
 							g.fillRect(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
@@ -270,19 +268,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 					}catch(BoardComponentNotFoundException bcnfe){
 			    		System.err.println(bcnfe.getMessage());
 			    	}
-//					if(bc.isOccupied()){
-//							//stack units
-//						stackUnits(row, col);
-//					}else{
-//						if(unstackObjects){		//set true by clicking the 'Un-stack' button
-//								//unstack units
-//							unstackUnits(row, col);
-//							unstackObjects = false;
-//						}else{
-//								//move units
-//							makeMove(row, col);
-//						}
-//					}
 					eraseValidMoves();
 						//set the selectedBC to some out of bounds location, keep from being null
 			    	selectedBC = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(-1, -1, -1));
