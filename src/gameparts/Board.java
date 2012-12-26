@@ -147,7 +147,7 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 					g.fillRect(2 + col * compSize, 2 + row * compSize, compSize, compSize);
 
 					if(bc.isOccupied()){
-						if(showIcons){
+						if(showIcons){	//if showIcons is true then use icons, else draw boxes
 							g.setColor(bc.getCharacter().getColor());
 							g.fillRect(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
 
@@ -175,6 +175,7 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 						}else{
 							g.setColor(bc.getCharacter().getColor());
 							g.fillRect(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
+								//give characters 'hats' and make Taichos different
 							if(bc.getCharacter().getRank() == Ranks.TAICHO){
 								g.setColor(Utils.blendColor(bc.getCharacter().getColor(), Color.BLACK, 0.3));
 							}else{
@@ -245,19 +246,43 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 				}else if( !validMoves.isEmpty() && validSelection(bc) ){
 						// if there is a selected BC and user chose a valid BC
 					System.out.println("make move to new VALID square");
-					if(bc.isOccupied()){
-							//stack units
-						stackUnits(row, col);
-					}else{
-						if(unstackObjects){		//set true by clicking the 'Un-stack' button
-								//unstack units
-							unstackUnits(row, col);
-							unstackObjects = false;
-						}else{
-								//move units
-							makeMove(row, col);
-						}
-					}
+					try{
+			    		BoardComponent selectedBc = board.getSelectedBoardComponent();
+			    		
+			    		if( bc.isOccupied() && bc.getCharacter().getPlayer() == selectedBc.getCharacter().getPlayer() ){
+			    			//both square are occupied by the same player
+			    			System.err.println("StackUnits");
+			    			stackUnits(row, col);
+			    		}else if( bc.isOccupied() && bc.getCharacter().getPlayer() != selectedBc.getCharacter().getPlayer() ){
+			    			//both squares are occupied by opposite players
+			    			System.out.println("AttackUnits");
+			    			attackObject(row, col);
+			    		}else if( !bc.isOccupied() ){
+			    			if(unstackObjects){
+			    				System.err.println("UnstackUnits");
+			    				unstackUnits(row, col);
+			    				unstackObjects = false;
+			    			}else{
+			    				System.err.println("MoveUnits");
+			    				makeMove(row, col);
+			    			}
+			    		}
+					}catch(BoardComponentNotFoundException bcnfe){
+			    		System.err.println(bcnfe.getMessage());
+			    	}
+//					if(bc.isOccupied()){
+//							//stack units
+//						stackUnits(row, col);
+//					}else{
+//						if(unstackObjects){		//set true by clicking the 'Un-stack' button
+//								//unstack units
+//							unstackUnits(row, col);
+//							unstackObjects = false;
+//						}else{
+//								//move units
+//							makeMove(row, col);
+//						}
+//					}
 					eraseValidMoves();
 						//set the selectedBC to some out of bounds location, keep from being null
 			    	selectedBC = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(-1, -1, -1));
@@ -432,12 +457,41 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
     		validMoves.get(i).setHighlight(false);
     		validMoves.get(i).setStackable(false);
     		validMoves.get(i).setSelected(false);
+    		validMoves.get(i).setAttackable(false);
     	}
     	validMoves.clear();
 	}
 	
 	
-	
+	private boolean attackObject(int row, int col){
+    	BoardComponent victimBc = board.pieceAt(row, col);
+    	BoardComponent attackingBc = board.getSelectedBoardComponent();
+    	if(victimBc.isOccupied() && attackingBc.isOccupied()){			//verify both squares are occupied
+    		MovableObject victimCharacter = victimBc.getCharacter();
+    		MovableObject oppressingCharacter = attackingBc.getCharacter();
+    		if(victimCharacter != oppressingCharacter && //must be opposite players and not a 'NONE' Player
+    				(victimCharacter.getPlayer() != Player.NONE && oppressingCharacter.getPlayer() != Player.NONE)){		
+    			
+    			if(oppressingCharacter.getCombatValue() >= victimCharacter.getCombatValue() && victimCharacter.getRank() != Ranks.TAICHO){
+    				System.out.println("..Bummer, you've been attacked -- " + victimBc.getCharacter().toString());
+    				victimBc.removeCharacter(); //dead
+    				victimBc.setCharacter( attackingBc.removeCharacter() );
+    				attackingBc.setSelected(false);
+    			}else{
+    				//attacking character cannot beat victim
+    				return false;
+    			}
+    		}else{
+    			//players were not right
+    			return false;
+    		}
+    	}else{
+    		//one or both BC's are not occupied
+    		return false;
+    	}
+    	
+		return false;
+	}
 	
 	
 	

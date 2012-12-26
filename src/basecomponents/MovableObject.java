@@ -206,6 +206,14 @@ public abstract class MovableObject {
 								legalMoves.add(potentialPosition);
 							}
 						}
+						if(this.player != potentialPosition.getCharacter().getPlayer()){
+							MovableObject potentialOpponent = potentialPosition.getCharacter();
+							if(this.combatValue >= potentialOpponent.getCombatValue()){
+								System.out.println("Found a potential enemy of " + this.toString() + " at -- " + potentialPosition.getCoordinate().toString());
+								potentialPosition.setAttackable(true);
+								legalMoves.add(potentialPosition);
+							}
+						}
 					}
 				}	
 			}catch(BoardComponentNotFoundException bcnfe){

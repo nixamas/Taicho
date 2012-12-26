@@ -22,6 +22,7 @@ public class BoardComponent {
 	private boolean occupied = false;
 	private boolean stackable = false;
 	private boolean selected = false;
+	private boolean attackable = false;
 	private MovableObject character;
 	private boolean highlight;
 	
@@ -82,6 +83,8 @@ public class BoardComponent {
 			return TaichoColors.GAME_BOARD_HIGHLIGHT.getColor();
 		}else if(stackable){
 			return TaichoColors.GAME_BOARD_STACKABLE.getColor();
+		}else if(attackable){
+			return TaichoColors.GAME_BOARD_ATTACKABLE.getColor();
 		}else{
 			return color;
 		}
@@ -106,6 +109,12 @@ public class BoardComponent {
 	}
 	public void setSelected(boolean selected) {
 		this.selected = selected;
+	}
+	public boolean isAttackable() {
+		return attackable;
+	}
+	public void setAttackable(boolean attackable) {
+		this.attackable = attackable;
 	}
 	@Override
 	public String toString() {
