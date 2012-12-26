@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utilities.Utils;
-
 import basecomponents.MovableObject;
 import enums.Player;
 import enums.Ranks;
@@ -31,9 +30,25 @@ public class ThreeUnit extends MovableObject {
 	public ThreeUnit(Player p, MovableObject comp1, MovableObject comp2){
 		super(p, Ranks.LEVEL_THREE);
 		components = new ArrayList<MovableObject>();
-		components.add(comp1);
-		components.add(comp2);
+		ArrayList<MovableObject> tempList;
+		if(comp1.getRank() == Ranks.LEVEL_TWO){
+			TwoUnit tempUnit = (TwoUnit) comp1;
+			tempList = tempUnit.getComponents();
+			components.add(tempList.get(0));
+			components.add(tempList.get(1));
+			components.add(comp2);
+		}else if(comp2.getRank() == Ranks.LEVEL_TWO){
+			TwoUnit tempUnit = (TwoUnit) comp2;
+			tempList = tempUnit.getComponents();
+			components.add(tempList.get(0));
+			components.add(tempList.get(1));
+			components.add(comp1);
+		}
 		combatValue = 3;
+	}
+	
+	public ArrayList<MovableObject> getComponents(){
+		return (ArrayList) this.components;
 	}
 	
 	@Override
@@ -56,6 +71,11 @@ public class ThreeUnit extends MovableObject {
 //		}
 //		return c;
 		return Utils.blendColor(this.getPlayer().getColor(), Color.DARK_GRAY, 0.4);
+	}
+	
+	public MovableObject removeUnitFromStack(){
+			//remove last unit in array from list
+		return this.components.remove( this.components.size() - 1 );
 	}
 	
 //	@Override

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utilities.Utils;
-
 import basecomponents.MovableObject;
 import enums.Player;
 import enums.Ranks;
@@ -23,6 +22,15 @@ public class TwoUnit extends MovableObject {
 		components = new ArrayList<MovableObject>();
 		components.add(comp1);
 		components.add(comp2);
+	}
+	
+	public ArrayList<MovableObject> getComponents(){
+		return (ArrayList) this.components;
+	}
+	
+	public MovableObject removeUnitFromStack(){
+			//remove last unit in array from list
+		return this.components.remove( this.components.size() - 1 );
 	}
 	
 	@Override

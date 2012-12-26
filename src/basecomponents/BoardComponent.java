@@ -54,7 +54,7 @@ public class BoardComponent {
 	public void setCharacter(MovableObject character) {
 		this.character = character;
 	}
-	public MovableObject removeCharachter(){
+	public MovableObject removeCharacter(){
 		MovableObject tempChar= this.character;
 		this.character = new EmptyObject();
 		return tempChar;
@@ -79,6 +79,8 @@ public class BoardComponent {
 			return Color.MAGENTA;
 		}else if(stackable){
 			return Color.GREEN;
+		}else if(selected){
+			return Color.CYAN;
 		}else{
 			return color;
 		}

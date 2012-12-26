@@ -7,11 +7,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import utilities.BoardDimensions;
-
 import basecomponents.BoardComponent;
+import basecomponents.Coordinate;
 import basecomponents.MovableObject;
 import characters.EmptyObject;
 import characters.ThreeUnit;
@@ -36,104 +37,55 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 						// This board is also responsible for generating
 						// lists of legal moves.
 
-	boolean gameInProgress; // Is a game currently in progress?
-
-	int selectedRow, selectedCol; // If the current player has selected a piece
-									// to
-									// move, these give the row and column
-									// containing that piece. If no piece is
-									// yet selected, then selectedRow is -1.
+	boolean gameInProgress, unstackObjects; // Is a game currently in progress?
 
 	ArrayList<BoardComponent> validMoves; // An array containing the legal moves for the
 								// current player.
 	Player player1, player2, currentPlayer;
 
 	BoardDimensions boardProperties;
+	
+	BoardComponent selectedBC;
+	
+	JButton unstackBtn;
 //	Taicho game;
 
 	/**player
 	 * Constructor. Create the buttons and label. Listens for mouse clicks and
 	 * for clicks on the buttons. Create the board and start the first game.
 	 */
-	public Board() {
+	public Board(JButton unstckBtn) {
 		System.out.println("Board constructor");
 		board = null;
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(30);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
-//		game = taicho;
+		boardProperties = new BoardDimensions(35);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 		setBackground(Color.BLACK);
 		addMouseListener(this);
 		currentPlayer = Player.NONE;
-//		taicho.setResignButton(new JButton("Resign"));
-//		taicho.getResignButton().addActionListener(this);
-//		taicho.setNewGameButton(new JButton("New Game"));
-//		taicho.getNewGameButton().addActionListener(this);
-//		taicho.setMessage(new JLabel("", JLabel.CENTER));
-//		taicho.getMessage().setFont(new Font("Serif", Font.BOLD, 14));
-//		taicho.getMessage().setForeground(Color.green);
+		unstackBtn = unstckBtn;
+		unstackBtn.addActionListener(this);
 		player1 = Player.PLAYER_ONE;
 		player2 = Player.PLAYER_TWO;
 		board = new TaichoGameData(player1, player2);
-		// doNewGame();
+		selectedBC = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(-1, -1, -1));
 		simulateMouseClick();
+		setButtonState();
+		unstackObjects = false;
 	}
 
 	/**
 	 * Respond to user's click on one of the two buttons.
 	 */
 	public void actionPerformed(ActionEvent evt) {
-		// Object src = evt.getSource();
-		// if (src == game.getNewGameButton())
-		// doNewGame();
-		// else if (src == game.getResignButton())
-		// doResign();
-	}
-
-	// /**
-	// * Start a new game
-	// */
-	void doNewGame() {
-		// if (gameInProgress == true) {
-		// // This should not be possible, but it doens't hurt to check.
-		// game.getMessage().setText("Finish the current game first!");
-		// return;
-		// }
-		// board.setUpGame(); // Set up the pieces.
-		// currentPlayer = ObjectData.RED; // RED moves first.
-		// legalMoves = board.getLegalMoves(ObjectData.RED); // Get RED's legal
-		// moves.
-		// selectedRow = -1; // RED has not yet selected a piece to move.
-		// game.getMessage().setText("Red:  Make your move.");
-		// gameInProgress = true;
-		// game.getNewGameButton().setEnabled(false);
-		// game.getResignButton().setEnabled(true);
-		// game.repaint();
-	}
-
-	/**
-	 * Current player resigns. Game ends. Opponent wins.
-	 */
-	void doResign() {
-		if (gameInProgress == false) { // Should be impossible.
-//			game.getMessage().setText("There is no game in progress!");
-			return;
-		}
-		if (currentPlayer == player1)
-			gameOver("RED resigns.  BLACK wins.");
-		else
-			gameOver("BLACK resigns.  RED wins.");
-	}
-
-	/**
-	 * The game ends. The parameter, str, is displayed as a message to the user.
-	 * The states of the buttons are adjusted so players can start a new game.
-	 * This method is called when the game ends at any point in this class.
-	 */
-	void gameOver(String str) {
-//		game.getMessage().setText(str);
-//		game.getNewGameButton().setEnabled(true);
-//		game.getResignButton().setEnabled(false);
-		gameInProgress = false;
+		System.out.println("****Button Clicked****");
+		 Object src = evt.getSource();
+		 if (src == this.unstackBtn){
+			 System.out.println("****unstackBtn clicked****");
+			 showValidUnstack();
+		 }
+//		 else if (src == game.getResignButton()){
+//			 doResign(); 
+//		 }
 	}
 
 	/**
@@ -193,6 +145,24 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 //		mousePressed(me);
 	}
 
+	private void setButtonState(){
+		if( this.selectedBC.getLocation() != Location.OUT_OF_BOUNDS && this.selectedBC.isOccupied() ){
+			Ranks r = this.selectedBC.getCharacter().getRank();
+			if( r == Ranks.LEVEL_TWO || r == Ranks.LEVEL_THREE ){
+				System.out.println("Selected BC is able to be unstacked");
+				this.unstackBtn.setVisible(true);
+			}else{
+				System.out.println("Rank is not unstackable");
+//				this.unstackBtn.disable();
+				this.unstackBtn.setVisible(false);
+			}
+		}else{
+//			this.unstackBtn.disable();
+			this.unstackBtn.setVisible(false);
+			System.out.println("Selected component is not occupied or is out of bounds");
+		}
+	}
+	
 	/**
 	 * Respond to a user click on the board. If no game is in progress, show an
 	 * error message. Otherwise, find the row and column that the user clicked
@@ -211,23 +181,29 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	    	System.err.println("************* BOARD SQUARE DATE *************");
 	    	
 	    	
-			if(bc.getLocation() != Location.OUT_OF_BOUNDS){
-				if(validMoves.isEmpty()){
+			if(bc.getLocation() != Location.OUT_OF_BOUNDS){	//if player clicks on the game board
+				if(validMoves.isEmpty()){		//if there is no valid moves (no BC selected)
 					System.out.println("valid moves is empty, first click");
-					doClickSquare(row, col);
+					selectBoardComponent(row, col);
 					currentPlayer = bc.getCharacter().getPlayer();
+					selectedBC = bc;
 				}else if( !validMoves.isEmpty() && validSelection(bc) ){
+						// if there is a selected BC and user chose a valid BC
 					System.out.println("make move to new VALID square");
 					if(bc.isOccupied()){
 						stackUnits(row, col);
 					}else{
-						makeMove(row, col);
+						if(unstackObjects){
+								//unstack units
+							unstackUnits(row, col);
+							unstackObjects = false;
+						}else{
+								//move units
+							makeMove(row, col);
+						}
 					}
-			    	for(int i = 0; i < validMoves.size(); i++){
-			    		validMoves.get(i).setHighlight(false);
-			    		validMoves.get(i).setStackable(false);
-			    	}
-			    	validMoves.clear();
+					eraseValidMoves();
+			    	selectedBC = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(-1, -1, -1));
 				}else{
 					System.out.println("checking if user clicked selected BC again. If so, Abort");
 					try{
@@ -235,12 +211,10 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 			    		if(bc.getCoordinate().equals( selectedBc.getCoordinate() )){
 			    				//if there is a selected BC then and the user clicked it a second time, 
 			    					//Then clear the valid moves array
-			    			for(int i = 0; i < validMoves.size(); i++){
-					    		validMoves.get(i).setHighlight(false);
-					    		validMoves.get(i).setStackable(false);
-					    	}
-					    	validMoves.clear();
+			    			selectedBc.setSelected(false);
+			    			eraseValidMoves();
 			    		}
+			    		selectedBC = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(-1, -1, -1));
 			    	}catch(BoardComponentNotFoundException bcnfe){
 			    		System.err.println(bcnfe.getMessage());
 			    	}
@@ -250,19 +224,8 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 			System.err.println(bcnfe.getMessage());
 		}
 		
+		setButtonState();
 		repaint();
-	}
-
-	public void mouseReleased(MouseEvent evt) {
-	}
-
-	public void mouseClicked(MouseEvent evt) {
-	}
-
-	public void mouseEntered(MouseEvent evt) {
-	}
-
-	public void mouseExited(MouseEvent evt) {
 	}
 
 	/**
@@ -270,7 +233,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
      * square in the specified row and col.  It has already been checked
      * that a game is, in fact, in progress.
      */
-    private void doClickSquare(int row, int col) {
+    private void selectBoardComponent(int row, int col) {
     	System.out.println("doClickSquare");
     	BoardComponent bc = board.pieceAt(row, col);
     	if(bc.isOccupied()){
@@ -297,7 +260,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     	BoardComponent selectedBc = board.getSelectedBoardComponent();
     	if(!bc.isOccupied() && bc.getLocation() != Location.OUT_OF_BOUNDS){
     		System.out.println("square IS NOT occupied");
-    		MovableObject temp = selectedBc.removeCharachter();
+    		MovableObject temp = selectedBc.removeCharacter();
     		bc.setCharacter( temp );
     	}
     	selectedBc.setSelected(false);
@@ -314,8 +277,8 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     			if( !(bc.getCharacter().getRank() == Ranks.LEVEL_THREE || selectedBc.getCharacter().getRank() == Ranks.LEVEL_THREE) ){ //&& //not level three 
     					if( !(bc.getCharacter().getRank() == Ranks.LEVEL_TWO && selectedBc.getCharacter().getRank() == Ranks.LEVEL_TWO) ){// ){ //or both are not level two
     				if( bc.getCharacter().getRank() != Ranks.TAICHO && selectedBc.getCharacter().getRank() != Ranks.TAICHO ){			//neither are a taicho
-    					MovableObject selectedChar = selectedBc.removeCharachter();
-    					MovableObject joiningChar = bc.removeCharachter();
+    					MovableObject selectedChar = selectedBc.removeCharacter();
+    					MovableObject joiningChar = bc.removeCharacter();
     					MovableObject newChar = new EmptyObject();
     					if( selectedChar.getRank() == Ranks.LEVEL_ONE && joiningChar.getRank() == Ranks.LEVEL_ONE ){
     						newChar = new TwoUnit(p, selectedChar, joiningChar);
@@ -338,6 +301,52 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     	return false;    	
     }
     
+    private boolean showValidUnstack(){
+    	System.out.println("showValidUnstack method");
+    	eraseValidMoves();
+    	unstackObjects = true;
+    	BoardComponent selectedBc = board.getSelectedBoardComponent();
+    	validMoves = selectedBc.getCharacter().getPossibleUnstackLocations(board, selectedBc);
+    	repaint();
+    	return true;
+    }
+    
+    private boolean unstackUnits(int row, int col){
+    	System.out.println("UNSTACKING CHARACTER UNIT " + selectedBC.toString() + " @ " + selectedBC.getCoordinate().toString());
+    	BoardComponent bc = board.pieceAt(row, col);
+    	BoardComponent selectedBc = board.getSelectedBoardComponent();
+    	Player p = selectedBc.getCharacter().getPlayer();
+    	if(!bc.isOccupied() && bc.getLocation() != Location.OUT_OF_BOUNDS){
+    		System.out.println("square IS NOT occupied");
+    		Ranks r = selectedBc.getCharacter().getRank();
+    		switch(r){
+				case LEVEL_TWO:
+					TwoUnit selectedTwoUnit = (TwoUnit) selectedBc.getCharacter();
+					MovableObject mo21 = selectedTwoUnit.removeUnitFromStack();
+					MovableObject mo20 = selectedTwoUnit.removeUnitFromStack();
+					bc.setCharacter( mo21 );
+					selectedBc.setCharacter( mo20 );
+					break;
+				case LEVEL_THREE:
+					ThreeUnit selectedThreeUnit = (ThreeUnit) selectedBc.getCharacter();
+					MovableObject mo32 = selectedThreeUnit.removeUnitFromStack();
+					MovableObject mo31 = selectedThreeUnit.removeUnitFromStack();
+					MovableObject mo30 = selectedThreeUnit.removeUnitFromStack();
+					bc.setCharacter( mo32 );
+					selectedBc.setCharacter( new TwoUnit( p, mo31, mo30 ) );
+					break;
+				case LEVEL_ONE:
+				case TAICHO:
+				case NONE:
+				default:	//no need to do anything
+					System.err.println("character is not able to be unstacked");
+					break;
+    		}
+    	}
+    	selectedBc.setSelected(false);
+    	repaint();
+    	return true;
+    }
     /**
      * if the param bc coordinate member is equal to a coordinate in the valid moves array return true, else false
      * @param bc
@@ -359,4 +368,59 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	public BoardDimensions getBoardProperties() {
 		return boardProperties;
 	}
+	
+	private void eraseValidMoves(){
+		for(int i = 0; i < validMoves.size(); i++){
+    		validMoves.get(i).setHighlight(false);
+    		validMoves.get(i).setStackable(false);
+    		validMoves.get(i).setSelected(false);
+    	}
+    	validMoves.clear();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public void mouseReleased(MouseEvent evt) {
+	}
+
+	public void mouseClicked(MouseEvent evt) {
+	}
+
+	public void mouseEntered(MouseEvent evt) {
+	}
+
+	public void mouseExited(MouseEvent evt) {
+	}
+	
 }
