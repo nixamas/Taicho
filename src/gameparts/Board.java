@@ -11,13 +11,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.coobird.thumbnailator.Thumbnails;
 import utilities.BoardDimensions;
+import utilities.ColorPanel;
 import basecomponents.BoardComponent;
 import basecomponents.MovableObject;
 import characters.EmptyObject;
@@ -57,6 +55,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 	Player player1, player2, currentPlayer;
 
 	BoardDimensions boardProperties;
+	
+	BufferedImage lvl1Img, lvl2Img, lvl3Img, TaichoImg;
 //	Taicho game;
 
 	/**player
@@ -65,9 +65,25 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 	 */
 	public Board() {
 		System.out.println("Board constructor");
+		try {	//get icons stored in memory
+			lvl1Img = Thumbnails.of(new File(ComponentImages.LEVEL_ONE_IMAGE.getImageLocation()))
+				.size(160, 160)
+				.asBufferedImage();
+			lvl2Img = Thumbnails.of(new File(ComponentImages.LEVEL_TWO_IMAGE.getImageLocation()))
+		        .size(160, 160)
+		        .asBufferedImage();
+			lvl3Img = Thumbnails.of(new File(ComponentImages.LEVEL_THREE_IMAGE.getImageLocation()))
+		        .size(160, 160)
+		        .asBufferedImage();
+			TaichoImg = Thumbnails.of(new File(ComponentImages.TAICHO_IMAGE.getImageLocation()))
+		        .size(160, 160)
+		        .asBufferedImage();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		board = null;
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(30);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
+		boardProperties = new BoardDimensions(60);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 //		game = taicho;
 		setBackground(Color.BLACK);
 		addMouseListener(this);
@@ -84,6 +100,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 		board = new TaichoGameData(player1, player2);
 		// doNewGame();
 		simulateMouseClick();
+		
+		
 	}
 
 	/**
@@ -159,26 +177,28 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 		int bL = boardProperties.getBoardLength();
 		int bW = boardProperties.getBoardWidth();
 		int charOffset = boardProperties.getCharacterOffset();
+		BufferedImage tn1 = null, tn2 = null, tn3 = null, tnT = null; //lvl 1, 2, 3, and Taicho
 		
-//		g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
-//		g.drawRect(1, 1, getSize().width - 3, getSize().height - 3);
+		/* Draw player indicator box around  */
 		g.drawRect(0, 0, bL - 1, bW - 1);
 		g.drawRect(1, 1, bL - 3, bW - 3);
 		
-		try {
-			Thumbnails.of(new File(ComponentImages.LEVEL_ONE_IMAGE.getImageLocation()))
-			.size(160, 160)
-			.toFile(new File("thumbnails/" + "LVL1"));
-			Thumbnails.of(new File(ComponentImages.LEVEL_TWO_IMAGE.getImageLocation()))
-	        .size(160, 160)
-	        .toFile(new File("thumbnails/" + "LVL2"));
-			Thumbnails.of(new File(ComponentImages.LEVEL_THREE_IMAGE.getImageLocation()))
-	        .size(160, 160)
-	        .toFile(new File("thumbnails/" + "LVL3"));
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+//		try {
+//			tn1 = Thumbnails.of(new File(ComponentImages.LEVEL_ONE_IMAGE.getImageLocation()))
+//				.size(160, 160)
+//				.asBufferedImage();
+//			tn2 = Thumbnails.of(new File(ComponentImages.LEVEL_TWO_IMAGE.getImageLocation()))
+//		        .size(160, 160)
+//		        .asBufferedImage();
+//			tn3 = Thumbnails.of(new File(ComponentImages.LEVEL_THREE_IMAGE.getImageLocation()))
+//		        .size(160, 160)
+//		        .asBufferedImage();
+//			tnT = Thumbnails.of(new File(ComponentImages.TAICHO_IMAGE.getImageLocation()))
+//		        .size(160, 160)
+//		        .asBufferedImage();
+//		} catch (IOException e1) {
+//			e1.printStackTrace();
+//		}
 		
 		
 		/* Draw the squares of the checkerboard and the checkers. */
@@ -198,27 +218,31 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 
 					if(bc.isOccupied()){
 						g.setColor(bc.getCharacter().getColor());
-						g.fillOval(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
-						String imgLoc = bc.getCharacter().getImageLocation().getImageLocation();
-						ImageIcon image = new ImageIcon( imgLoc );
-						JLabel label = new JLabel("", image, JLabel.CENTER);
-//						JPanel panel = new JPanel(new BorderLayout());
-//						panel.add( label, BorderLayout.CENTER );
-//						this.add(label);
-						BufferedImage myPicture;
-						try {
-							myPicture = ImageIO.read(new File( imgLoc ));
-							JLabel picLabel = new JLabel(new ImageIcon( myPicture ));
-							add( picLabel );
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+						g.fillRect(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
+//						String imgLoc = bc.getCharacter().getImageLocation().getImageLocation();
+//						ImageIcon image = new ImageIcon( imgLoc );
+//						JLabel label = new JLabel("", image, JLabel.CENTER);
+						Ranks r = bc.getCharacter().getRank();
+						BufferedImage icon = null;
+						switch(r){
+						case LEVEL_ONE:
+								icon = lvl1Img;
+							break;
+						case LEVEL_TWO:
+								icon = lvl2Img;
+							break;
+						case LEVEL_THREE:
+								icon = lvl3Img;
+							break;
+						case TAICHO:
+								icon = TaichoImg;
+							break;
+						case NONE:
+						default:
+							break;
 						}
 						
-//						Thumbails t = Thumbnails.
-//						g.drawImage(image, col, row, compSize, compSize, (ImageObserver)null);
-						
-//						g.dra
+						g.drawImage(icon, 2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize - 15, charSize - 15, null);
 					}
 				}else{
 					g.setColor(bc.getColor());
