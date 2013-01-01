@@ -1,0 +1,79 @@
+\hypertarget{classgameparts_1_1_board}{\section{gameparts.\-Board Class Reference}
+\label{classgameparts_1_1_board}\index{gameparts.\-Board@{gameparts.\-Board}}
+}
+Inheritance diagram for gameparts.\-Board\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classgameparts_1_1_board}
+\end{center}
+\end{figure}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgameparts_1_1_board_a9c52eae247aec6c6073fc7ec1c20ed1f}{Board} (J\-Button unstck\-Btn)
+\item 
+void \hyperlink{classgameparts_1_1_board_a1513a73b6a5ca6a802238e383236cbb2}{action\-Performed} (Action\-Event evt)
+\item 
+void \hyperlink{classgameparts_1_1_board_a6e5f262b91e63b2544ea0b5826ab363f}{paint\-Component} (Graphics g)
+\item 
+void \hyperlink{classgameparts_1_1_board_aceaa44a25143a084c6a3b75d888d903d}{mouse\-Pressed} (Mouse\-Event evt)
+\item 
+\hypertarget{classgameparts_1_1_board_a8f9fa1238c736e4eb6579ba886bb38f9}{\hyperlink{classutilities_1_1_board_dimensions}{Board\-Dimensions} {\bfseries get\-Board\-Properties} ()}\label{classgameparts_1_1_board_a8f9fa1238c736e4eb6579ba886bb38f9}
+
+\item 
+\hypertarget{classgameparts_1_1_board_a69bb58d1f9a001eb6c42e4e8b3a6f5db}{void {\bfseries mouse\-Released} (Mouse\-Event evt)}\label{classgameparts_1_1_board_a69bb58d1f9a001eb6c42e4e8b3a6f5db}
+
+\item 
+\hypertarget{classgameparts_1_1_board_a58cd43d9e71251e8450cf634cc53ce39}{void {\bfseries mouse\-Clicked} (Mouse\-Event evt)}\label{classgameparts_1_1_board_a58cd43d9e71251e8450cf634cc53ce39}
+
+\item 
+\hypertarget{classgameparts_1_1_board_a98a9191272125ef23b7b3fd2cf6bf178}{void {\bfseries mouse\-Entered} (Mouse\-Event evt)}\label{classgameparts_1_1_board_a98a9191272125ef23b7b3fd2cf6bf178}
+
+\item 
+\hypertarget{classgameparts_1_1_board_a6b9507b1a6b392a4689fabae73452f6e}{void {\bfseries mouse\-Exited} (Mouse\-Event evt)}\label{classgameparts_1_1_board_a6b9507b1a6b392a4689fabae73452f6e}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+U\-I for game. Deals with how the game program interfaces with the user 
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgameparts_1_1_board_a9c52eae247aec6c6073fc7ec1c20ed1f}{\index{gameparts\-::\-Board@{gameparts\-::\-Board}!Board@{Board}}
+\index{Board@{Board}!gameparts::Board@{gameparts\-::\-Board}}
+\subsubsection[{Board}]{\setlength{\rightskip}{0pt plus 5cm}gameparts.\-Board.\-Board (
+\begin{DoxyParamCaption}
+\item[{J\-Button}]{unstck\-Btn}
+\end{DoxyParamCaption}
+)}}\label{classgameparts_1_1_board_a9c52eae247aec6c6073fc7ec1c20ed1f}
+player Constructor. Create the buttons and label. Listens for mouse clicks and for clicks on the buttons. Create the board and start the first game. $<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$ C\-H\-A\-N\-G\-E S\-C\-R\-E\-E\-N S\-I\-Z\-E
+
+$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$$<$ S\-E\-T T\-R\-U\-E F\-O\-R I\-M\-A\-G\-E I\-C\-O\-N\-S I\-N\-S\-T\-E\-A\-D O\-F S\-H\-A\-P\-E\-S 
+
+\subsection{Member Function Documentation}
+\hypertarget{classgameparts_1_1_board_a1513a73b6a5ca6a802238e383236cbb2}{\index{gameparts\-::\-Board@{gameparts\-::\-Board}!action\-Performed@{action\-Performed}}
+\index{action\-Performed@{action\-Performed}!gameparts::Board@{gameparts\-::\-Board}}
+\subsubsection[{action\-Performed}]{\setlength{\rightskip}{0pt plus 5cm}void gameparts.\-Board.\-action\-Performed (
+\begin{DoxyParamCaption}
+\item[{Action\-Event}]{evt}
+\end{DoxyParamCaption}
+)}}\label{classgameparts_1_1_board_a1513a73b6a5ca6a802238e383236cbb2}
+Respond to user's click on one of the two buttons. \hypertarget{classgameparts_1_1_board_aceaa44a25143a084c6a3b75d888d903d}{\index{gameparts\-::\-Board@{gameparts\-::\-Board}!mouse\-Pressed@{mouse\-Pressed}}
+\index{mouse\-Pressed@{mouse\-Pressed}!gameparts::Board@{gameparts\-::\-Board}}
+\subsubsection[{mouse\-Pressed}]{\setlength{\rightskip}{0pt plus 5cm}void gameparts.\-Board.\-mouse\-Pressed (
+\begin{DoxyParamCaption}
+\item[{Mouse\-Event}]{evt}
+\end{DoxyParamCaption}
+)}}\label{classgameparts_1_1_board_aceaa44a25143a084c6a3b75d888d903d}
+Respond to a user click on the board. If no game is in progress, show an error message. Otherwise, find the row and column that the user clicked and call do\-Click\-Square() to handle it. \hypertarget{classgameparts_1_1_board_a6e5f262b91e63b2544ea0b5826ab363f}{\index{gameparts\-::\-Board@{gameparts\-::\-Board}!paint\-Component@{paint\-Component}}
+\index{paint\-Component@{paint\-Component}!gameparts::Board@{gameparts\-::\-Board}}
+\subsubsection[{paint\-Component}]{\setlength{\rightskip}{0pt plus 5cm}void gameparts.\-Board.\-paint\-Component (
+\begin{DoxyParamCaption}
+\item[{Graphics}]{g}
+\end{DoxyParamCaption}
+)}}\label{classgameparts_1_1_board_a6e5f262b91e63b2544ea0b5826ab363f}
+Draw checkerboard pattern in gray and light\-Gray. Draw the checkers. If a game is in progress, hilite the legal moves. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+C\-:/\-Users/\-Ryan/java\-\_\-workspace/\-Taicho/src/gameparts/Board.\-java\end{DoxyCompactItemize}

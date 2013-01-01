@@ -1,0 +1,69 @@
+\hypertarget{classgameparts_1_1_taicho_game_data}{\section{gameparts.\-Taicho\-Game\-Data Class Reference}
+\label{classgameparts_1_1_taicho_game_data}\index{gameparts.\-Taicho\-Game\-Data@{gameparts.\-Taicho\-Game\-Data}}
+}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classgameparts_1_1_taicho_game_data_af29a8478a80dbf41b10b3bd93dd02014}{Taicho\-Game\-Data} (\hyperlink{enumenums_1_1_player}{Player} p1, \hyperlink{enumenums_1_1_player}{Player} p2)
+\item 
+void \hyperlink{classgameparts_1_1_taicho_game_data_affd00483be7a0c586f7ba812eeee20b2}{set\-Up\-Game} ()
+\item 
+\hyperlink{classbasecomponents_1_1_board_component}{Board\-Component} \hyperlink{classgameparts_1_1_taicho_game_data_a05658e9cf383afdb6f44f676ea7e5fbf}{piece\-At} (int row, int col)
+\item 
+\hypertarget{classgameparts_1_1_taicho_game_data_a8720dd08938b6fe530b411dde29d0a6c}{\hyperlink{classbasecomponents_1_1_coordinate}{Coordinate} {\bfseries get\-Coordinate\-Of\-Id} (int id)}\label{classgameparts_1_1_taicho_game_data_a8720dd08938b6fe530b411dde29d0a6c}
+
+\item 
+\hypertarget{classgameparts_1_1_taicho_game_data_a6ab803f168e0cb3562a5cb1ae67f2ef8}{\hyperlink{classbasecomponents_1_1_board_component}{Board\-Component} {\bfseries get\-Board\-Component\-At\-Id} (int id)}\label{classgameparts_1_1_taicho_game_data_a6ab803f168e0cb3562a5cb1ae67f2ef8}
+
+\item 
+\hypertarget{classgameparts_1_1_taicho_game_data_a7eff12889348e49fda984d7bdd9caed1}{\hyperlink{classbasecomponents_1_1_board_component}{Board\-Component} {\bfseries get\-Selected\-Board\-Component} ()}\label{classgameparts_1_1_taicho_game_data_a7eff12889348e49fda984d7bdd9caed1}
+
+\item 
+\hypertarget{classgameparts_1_1_taicho_game_data_a5bbf3bff0a5a7580f3134cf342b815e1}{boolean {\bfseries is\-Within\-Buffer\-Zone} (int buffer\-Zone, \hyperlink{classbasecomponents_1_1_board_component}{Board\-Component} selected\-Bc, \hyperlink{classbasecomponents_1_1_board_component}{Board\-Component} potential\-Bc)}\label{classgameparts_1_1_taicho_game_data_a5bbf3bff0a5a7580f3134cf342b815e1}
+
+\item 
+\hypertarget{classgameparts_1_1_taicho_game_data_acefb395f674430a1108927f4393b7e87}{Array\-List$<$ \hyperlink{classbasecomponents_1_1_board_component}{Board\-Component} $>$ {\bfseries get\-Castle\-Board\-Components} (\hyperlink{enumenums_1_1_player}{Player} p)}\label{classgameparts_1_1_taicho_game_data_acefb395f674430a1108927f4393b7e87}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Controls the game data dealing with the board
+
+Functions\-: \hyperlink{classgameparts_1_1_taicho_game_data_a05658e9cf383afdb6f44f676ea7e5fbf}{piece\-At(int row, int col)} get\-Coordinate\-Of\-Id(int id) get\-Board\-Component\-At\-Id(int id) get\-Selected\-Board\-Component() is\-Within\-Buffer\-Zone(int buffer\-Zone, Board\-Component bc, Board\-Component pbc) get\-Castle\-Board\-Components(\-Player p) \begin{DoxyAuthor}{Author}
+Ryan 
+\end{DoxyAuthor}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\hypertarget{classgameparts_1_1_taicho_game_data_af29a8478a80dbf41b10b3bd93dd02014}{\index{gameparts\-::\-Taicho\-Game\-Data@{gameparts\-::\-Taicho\-Game\-Data}!Taicho\-Game\-Data@{Taicho\-Game\-Data}}
+\index{Taicho\-Game\-Data@{Taicho\-Game\-Data}!gameparts::TaichoGameData@{gameparts\-::\-Taicho\-Game\-Data}}
+\subsubsection[{Taicho\-Game\-Data}]{\setlength{\rightskip}{0pt plus 5cm}gameparts.\-Taicho\-Game\-Data.\-Taicho\-Game\-Data (
+\begin{DoxyParamCaption}
+\item[{{\bf Player}}]{p1, }
+\item[{{\bf Player}}]{p2}
+\end{DoxyParamCaption}
+)}}\label{classgameparts_1_1_taicho_game_data_af29a8478a80dbf41b10b3bd93dd02014}
+Constructor. Create the board and set it up for a new game. 
+
+\subsection{Member Function Documentation}
+\hypertarget{classgameparts_1_1_taicho_game_data_a05658e9cf383afdb6f44f676ea7e5fbf}{\index{gameparts\-::\-Taicho\-Game\-Data@{gameparts\-::\-Taicho\-Game\-Data}!piece\-At@{piece\-At}}
+\index{piece\-At@{piece\-At}!gameparts::TaichoGameData@{gameparts\-::\-Taicho\-Game\-Data}}
+\subsubsection[{piece\-At}]{\setlength{\rightskip}{0pt plus 5cm}{\bf Board\-Component} gameparts.\-Taicho\-Game\-Data.\-piece\-At (
+\begin{DoxyParamCaption}
+\item[{int}]{row, }
+\item[{int}]{col}
+\end{DoxyParamCaption}
+)}}\label{classgameparts_1_1_taicho_game_data_a05658e9cf383afdb6f44f676ea7e5fbf}
+Return the contents of the square in the specified row and column. \hypertarget{classgameparts_1_1_taicho_game_data_affd00483be7a0c586f7ba812eeee20b2}{\index{gameparts\-::\-Taicho\-Game\-Data@{gameparts\-::\-Taicho\-Game\-Data}!set\-Up\-Game@{set\-Up\-Game}}
+\index{set\-Up\-Game@{set\-Up\-Game}!gameparts::TaichoGameData@{gameparts\-::\-Taicho\-Game\-Data}}
+\subsubsection[{set\-Up\-Game}]{\setlength{\rightskip}{0pt plus 5cm}void gameparts.\-Taicho\-Game\-Data.\-set\-Up\-Game (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{classgameparts_1_1_taicho_game_data_affd00483be7a0c586f7ba812eeee20b2}
+Set up the board with checkers in position for the beginning of a game. Note that checkers can only be found in squares that satisfy row \% 2 == col \% 2. At the start of the game, all such squares in the first three rows contain black squares and all such squares in the last three rows contain red squares. 
+
+The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+C\-:/\-Users/\-Ryan/java\-\_\-workspace/\-Taicho/src/gameparts/Taicho\-Game\-Data.\-java\end{DoxyCompactItemize}

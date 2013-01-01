@@ -1,0 +1,26 @@
+var classbasecomponents_1_1_board_component =
+[
+    [ "BoardComponent", "classbasecomponents_1_1_board_component.html#a77f8dc86525f9df62ac513bc71239ba3", null ],
+    [ "BoardComponent", "classbasecomponents_1_1_board_component.html#a071c204bc828f06dd41b691df9756135", null ],
+    [ "equals", "classbasecomponents_1_1_board_component.html#a8ba2ad9d46d276b2f1a25d74f96dcfa5", null ],
+    [ "getCharacter", "classbasecomponents_1_1_board_component.html#a762c681925e7975640f5375fd35f59cd", null ],
+    [ "getColor", "classbasecomponents_1_1_board_component.html#aa0cac508745ab39488089de70505bbf6", null ],
+    [ "getCoordinate", "classbasecomponents_1_1_board_component.html#aa871cb6755457afa5c981480457c11a6", null ],
+    [ "getId", "classbasecomponents_1_1_board_component.html#a3224a81ef0efa1f6f294d606a2d13344", null ],
+    [ "getLocation", "classbasecomponents_1_1_board_component.html#a002e0436de72f9168c0e07a0cdf1112d", null ],
+    [ "hashCode", "classbasecomponents_1_1_board_component.html#a9b28fa3b86ac806f7d2c6736c165cd5d", null ],
+    [ "isAttackable", "classbasecomponents_1_1_board_component.html#a110f341de38eefd7d8e8b80321e5746e", null ],
+    [ "isHighlight", "classbasecomponents_1_1_board_component.html#a9c3856acfa4caa772482a0a6ccba4663", null ],
+    [ "isOccupied", "classbasecomponents_1_1_board_component.html#a90ecceefe9013abc2df0c5f58cb486e0", null ],
+    [ "isSelected", "classbasecomponents_1_1_board_component.html#a1744723cb2f71d40fb55a6eb430dd506", null ],
+    [ "isStackable", "classbasecomponents_1_1_board_component.html#a3cf01752e8a19c9a9ba8cc98bdede0d3", null ],
+    [ "removeCharacter", "classbasecomponents_1_1_board_component.html#abc5d16c7ac3bd212be2c562b5c31f6d2", null ],
+    [ "setAttackable", "classbasecomponents_1_1_board_component.html#a13100901d3dfde725a88cc9aa49d96e5", null ],
+    [ "setCharacter", "classbasecomponents_1_1_board_component.html#a7aa9f7fddb9aedede60975fb3543977e", null ],
+    [ "setColor", "classbasecomponents_1_1_board_component.html#a537cc29f8663769187843cfa32167649", null ],
+    [ "setHighlight", "classbasecomponents_1_1_board_component.html#a060cdc51fb742f13ab151b2a9e79d0b3", null ],
+    [ "setId", "classbasecomponents_1_1_board_component.html#a8ff39219654f2639a8ab0a9363c8d28e", null ],
+    [ "setSelected", "classbasecomponents_1_1_board_component.html#adcd874effad190d380416af78206d904", null ],
+    [ "setStackable", "classbasecomponents_1_1_board_component.html#ae1ed8320234b2e75e60d9b014bb6269e", null ],
+    [ "toString", "classbasecomponents_1_1_board_component.html#a9c7b53ca74f8741c61ab535ec4f366dd", null ]
+];
