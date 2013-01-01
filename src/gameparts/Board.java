@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +32,7 @@ import exceptions.BoardComponentNotFoundException;
  * UI for game. Deals with how the game program interfaces with the user
  *
  */
-public class Board extends JPanel implements ActionListener, MouseListener, ImageObserver {
+public class Board extends JPanel implements ActionListener, MouseListener {
 	
 	/**
 	 * 
@@ -58,8 +57,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 	
 	JButton unstackBtn;
 	
-	/**player
-	 * Constructor. Create the buttons and label. Listens for mouse clicks and
+	/**
+	 * Constructor. Create the buttons and label. Creates Listeners for mouse clicks and
 	 * for clicks on the buttons. Create the board and start the first game.
 	 */
 	public Board(JButton unstckBtn) {
@@ -192,6 +191,11 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 ////		mousePressed(me);
 //	}
 
+	/**
+	 * the functions controls the state of the 'unstack' button.
+	 * When a BC is selected and that BC contains a character of Rank lvl2 or lvl3 
+	 * then the button should be visible, else the button should be invisible
+	 */
 	private void setButtonState(){
 		if( this.selectedBC.getLocation() != Location.OUT_OF_BOUNDS && this.selectedBC.isOccupied() ){
 			Ranks r = this.selectedBC.getCharacter().getRank();
@@ -209,9 +213,9 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 	}
 	
 	/**
-	 * Respond to a user click on the board. If no game is in progress, show an
-	 * error message. Otherwise, find the row and column that the user clicked
-	 * and call doClickSquare() to handle it.
+	 * Respond to a user click on the board. Calculates which BC was selected, if any. 
+	 * If a BC is already selected then this method will decide whether the user wants
+	 * to makeMove, stackUnits, attack, or unstack objects
 	 */
 	public void mousePressed(MouseEvent evt) {
 		
@@ -298,8 +302,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 
 	/**
      * This is called by mousePressed() when a player clicks on the
-     * square in the specified row and col.  It has already been checked
-     * that a game is, in fact, in progress.
+     * square in the specified row and col. If this BC is a valid selection 
+     * get the valid moves that the selected character could travel
      */
     private void selectBoardComponent(int row, int col) {
     	System.out.println("doClickSquare");
@@ -335,6 +339,14 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
     	repaint();
     }
     
+    /**
+     * This method is called to stack one character on top of another character, of the same player. 
+     * After some validation it will remove the character from its original place and replace it 
+     * with a character of one higher rank
+     * @param row
+     * @param col
+     * @return
+     */
     private boolean stackUnits(int row, int col){
     	System.out.println("stack units");
     	BoardComponent bc = board.pieceAt(row, col);
@@ -369,6 +381,10 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
     	return false;    	
     }
     
+    /**
+     * shows the valid moves for a unstacking of a character.
+     * @return
+     */
     private boolean showValidUnstack(){
     	System.out.println("showValidUnstack method");
     	eraseValidMoves();
@@ -379,6 +395,12 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
     	return true;
     }
     
+    /**
+     * Does basically the opposite of makeMove.
+     * @param row
+     * @param col
+     * @return
+     */
     private boolean unstackUnits(int row, int col){
     	System.out.println("UNSTACKING CHARACTER UNIT " + selectedBC.toString() + " @ " + selectedBC.getCoordinate().toString());
     	BoardComponent bc = board.pieceAt(row, col);
@@ -415,28 +437,32 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
     	repaint();
     	return true;
     }
+    
     /**
      * if the param bc coordinate member is equal to a coordinate in the valid moves array return true, else false
      * @param bc
      * @return
      */
     private boolean validSelection(BoardComponent bc){
-//    	System.out.println("find if " + bc.getCoordinate().toString() + "  is valid");
     	for(BoardComponent vbc : validMoves){
-//    		System.out.println("find if " + vbc.getCoordinate().toString() + " is the selected move position");
     		if(vbc.getCoordinate().equals(bc.getCoordinate())){
-//    			System.out.println("found a match at " + bc.getCoordinate().toString());
     			return true;
     		}
     	}
 		return false;
-    	
     }
     
+    /**
+     * Returns the BoardDimensions member of the Board.java class
+     * @return
+     */
 	public BoardDimensions getBoardProperties() {
 		return boardProperties;
 	}
 	
+	/**
+	 * Erases the validMoves array
+	 */
 	private void eraseValidMoves(){
 		for(int i = 0; i < validMoves.size(); i++){
     		validMoves.get(i).setHighlight(false);
@@ -447,7 +473,12 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
     	validMoves.clear();
 	}
 	
-	
+	/**
+	 * Method handles combat. verifies that the characters are able to battle
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	private boolean attackObject(int row, int col){
     	BoardComponent victimBc = board.pieceAt(row, col);
     	BoardComponent attackingBc = board.getSelectedBoardComponent();
@@ -474,7 +505,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
     		//one or both BC's are not occupied
     		return false;
     	}
-    	
 		return false;
 	}
 	
@@ -507,17 +537,20 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 	
 	
 	
-	
-	public void mouseReleased(MouseEvent evt) {
-	}
-
-	public void mouseClicked(MouseEvent evt) {
-	}
-
-	public void mouseEntered(MouseEvent evt) {
-	}
-
-	public void mouseExited(MouseEvent evt) {
-	}
-	
+	/**
+	 * NEEDED BECAUSE CLASS IMPLEMENTS ActionListener, AND MouseListener
+	 */
+	public void mouseReleased(MouseEvent evt) {	}
+	/**
+	 * NEEDED BECAUSE CLASS IMPLEMENTS ActionListener, AND MouseListener
+	 */
+	public void mouseClicked(MouseEvent evt) {	}
+	/**
+	 * NEEDED BECAUSE CLASS IMPLEMENTS ActionListener, AND MouseListener
+	 */
+	public void mouseEntered(MouseEvent evt) {	}
+	/**
+	 * NEEDED BECAUSE CLASS IMPLEMENTS ActionListener, AND MouseListener
+	 */
+	public void mouseExited(MouseEvent evt) {	}
 }

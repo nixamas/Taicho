@@ -29,30 +29,37 @@ public abstract class MovableObject {
 	protected Ranks rank;
 	protected final ComponentImages imageLocation;
 	
+	/**
+	 * Constructor for MovableObject sets the player, rank, and componentImages members
+	 * the combat values is set based on what ever the rank is 
+	 * @param p
+	 * @param r
+	 * @param ci
+	 */
 	public MovableObject(Player p, Ranks r, ComponentImages ci) {
 		player = p;
 		rank = r;
 		this.imageLocation = ci;
 		switch(rank){
-		case NONE:
-			this.combatValue = -1;
-			break;
-		case LEVEL_ONE:
-			this.combatValue = 1;
-			break;
-		case LEVEL_TWO:
-			this.combatValue = 2;
-			break;
-		case LEVEL_THREE:
-			this.combatValue = 3;
-			break;
-		case TAICHO:
-			this.combatValue = 1;
-			break;
-		default:
-			this.combatValue = -1;
-			break;
-	}
+			case NONE:
+				this.combatValue = -1;
+				break;
+			case LEVEL_ONE:
+				this.combatValue = 1;
+				break;
+			case LEVEL_TWO:
+				this.combatValue = 2;
+				break;
+			case LEVEL_THREE:
+				this.combatValue = 3;
+				break;
+			case TAICHO:
+				this.combatValue = 1;
+				break;
+			default:
+				this.combatValue = -1;
+				break;
+		}
 	}
 
 	public int getCombatValue(){
@@ -76,6 +83,10 @@ public abstract class MovableObject {
 		return rank;
 	}
 
+	/**
+	 * Sets the ranks and combatValue based on rank
+	 * @param rank
+	 */
 	public void setRank(Ranks rank) {
 		this.rank = rank;
 		switch(rank){
@@ -127,54 +138,21 @@ public abstract class MovableObject {
 		return legalMoves;
 	}
 	
-	//	public abstract void setPlayer(Player p);
-//	public abstract Player getPlayer();
-//	public ArrayList<BoardComponent> getPossibleMoves(TaichoGameData board, BoardComponent bc){
-//		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
-//		ArrayList<MoveManager> mm = new ArrayList<MoveManager>();
-//		int bufferZone = 0;
-//		boolean isTaicho = false;
-//		switch(rank){
-//			case NONE:
-//				break;
-//			case LEVEL_ONE:
-//				bufferZone = LevelOneLegalMoves.getBufferValue();
-//				LevelOneLegalMoves[] l1moves = LevelOneLegalMoves.values();
-//				for(int i = 0; i < l1moves.length; i++){
-//					mm.add(l1moves[i]);
-//				}
-//				break;
-//			case LEVEL_TWO:
-//				bufferZone = LevelTwoLegalMoves.getBufferValue();
-//				LevelTwoLegalMoves[] l2moves = LevelTwoLegalMoves.values();
-//				for(int i = 0; i < l2moves.length; i++){
-//					mm.add(l2moves[i]);
-//				}
-//				break;
-//			case LEVEL_THREE:
-//				bufferZone = LevelThreeLegalMoves.getBufferValue();
-//				LevelThreeLegalMoves[] l3moves = LevelThreeLegalMoves.values();
-//				for(int i = 0; i < l3moves.length; i++){
-//					mm.add(l3moves[i]);
-//				}
-//				break;
-//			case TAICHO:
-//				isTaicho = true;
-//				break;
-//			default:
-//				break;
-//		}
-//		
-//		if( !isTaicho ){
-//			System.out.println("you clicked a samurai");
-//			legalMoves = getSamuraiMoves(mm, board, bc, bufferZone);
-//		}else if( isTaicho ){
-//			System.out.println("you clicked a taicho");
-//			legalMoves = getTaichoMoves(board, bc);
-//		}
-//		
-//		return legalMoves;
-//	}
+	/**
+	 * getPossibleMoves is called for all character objects that extend MovableObject.
+	 * 
+	 * based on the rank of 'this' object it will create an ArrayList<ArrayList<MoveManager>>
+	 * 		that will contain all possible moves for that ranked object.
+	 * 
+	 * This double array is used to calculate whether objects are blocked by other objects. 
+	 * The first set of arrays is the different paths that an object can take. Each array 
+	 * of each path is made up of moves in order along the path radiating out from the object. 
+	 * This method then looks through the double array and if a path is found to be blocked, a 
+	 * boolean flag is set and the rest of the path is ignored. 
+	 * @param board
+	 * @param bc
+	 * @return
+	 */
 	public ArrayList<BoardComponent> getPossibleMoves(TaichoGameData board, BoardComponent bc){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		ArrayList<ArrayList<MoveManager>> mm = new ArrayList<ArrayList<MoveManager>>();
@@ -186,27 +164,14 @@ public abstract class MovableObject {
 			case LEVEL_ONE:
 				bufferZone = LevelOneLegalMoves.getBufferValue();
 				mm = LevelOneLegalMoves.getBlockablePathsOfMoves();
-				
-//				LevelOneLegalMoves[] l1moves = LevelOneLegalMoves.values();
-//				for(int i = 0; i < l1moves.length; i++){
-//					mm.add(l1moves[i]);
-//				}
 				break;
 			case LEVEL_TWO:
 				bufferZone = LevelTwoLegalMoves.getBufferValue();
 				mm = LevelTwoLegalMoves.getBlockablePathsOfMoves();
-//				LevelTwoLegalMoves[] l2moves = LevelTwoLegalMoves.values();
-//				for(int i = 0; i < l2moves.length; i++){
-//					mm.add(l2moves[i]);
-//				}
 				break;
 			case LEVEL_THREE:
 				bufferZone = LevelThreeLegalMoves.getBufferValue();
 				mm = LevelThreeLegalMoves.getBlockablePathsOfMoves();
-//				LevelThreeLegalMoves[] l3moves = LevelThreeLegalMoves.values();
-//				for(int i = 0; i < l3moves.length; i++){
-//					mm.add(l3moves[i]);
-//				}
 				break;
 			case TAICHO:
 				isTaicho = true;
@@ -226,6 +191,13 @@ public abstract class MovableObject {
 		return legalMoves;
 	}
 	
+	/**
+	 * called if the chosen object is a Taicho ranked object
+	 * returns all unoccupied BC's within the players castle area
+	 * @param board
+	 * @param bc
+	 * @return
+	 */
 	private ArrayList<BoardComponent> getTaichoMoves(TaichoGameData board, BoardComponent bc){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		ArrayList<BoardComponent> castle = board.getCastleBoardComponents( bc.getCharacter().getPlayer() );
@@ -238,24 +210,36 @@ public abstract class MovableObject {
 		return legalMoves;
 	}
 	
+	/**
+	 * called if the chosen object is a lvl1, lvl2, or lvl3 object
+	 * @param mm
+	 * @param board
+	 * @param bc
+	 * @param bufferZone
+	 * @return
+	 */
 	private ArrayList<BoardComponent> getSamuraiMoves(ArrayList<ArrayList<MoveManager>> mm,TaichoGameData board, BoardComponent bc, int bufferZone){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		boolean blockedPath = false;
-		for(ArrayList<MoveManager> path : mm){
+		for(ArrayList<MoveManager> path : mm){		//for each path in the list
 			blockedPath = false;
-			for(MoveManager move : path){
-				int changeVal = move.getNumVal();
-				if( !blockedPath ){
+			for(MoveManager move : path){			//for each move in the path
+				int changeVal = move.getNumVal();	//get change value (+/-X)
+				if( !blockedPath ){					//if current path is not yet blocked 
 					try{
 						BoardComponent potentialPosition = board.getBoardComponentAtId(bc.getId() + changeVal);
-						if( board.isWithinBufferZone(bufferZone, bc, potentialPosition)){
+						if( board.isWithinBufferZone(bufferZone, bc, potentialPosition)){ //if potPos is within bufferZone
 							if( !potentialPosition.isOccupied() && potentialPosition.getLocation() != Location.OUT_OF_BOUNDS ){
+									//unoccupied BC
 								potentialPosition.setHighlight(true);
 								legalMoves.add(potentialPosition);
 							} else if (potentialPosition.isOccupied()){
+								//occupied BC
 								if( this.rank != Ranks.LEVEL_THREE && this.rank != Ranks.TAICHO ){
+									//must be rank lvl1 or lvl2 to stack
 									if(potentialPosition.getCharacter().getPlayer() == bc.getCharacter().getPlayer() 
 											&& ( potentialPosition.getCharacter().getRank() != Ranks.TAICHO && potentialPosition.getCharacter().getRank() != Ranks.LEVEL_THREE)){
+										//BC is a stackable position
 										potentialPosition.setStackable(true);
 										legalMoves.add(potentialPosition);
 									}
@@ -263,6 +247,7 @@ public abstract class MovableObject {
 								if(this.player != potentialPosition.getCharacter().getPlayer()){
 									MovableObject potentialOpponent = potentialPosition.getCharacter();
 									if(this.combatValue >= potentialOpponent.getCombatValue()){
+										//BC is a attackable position
 										System.out.println("Found a potential enemy of " + this.toString() + " at -- " + potentialPosition.getCoordinate().toString());
 										potentialPosition.setAttackable(true);
 										legalMoves.add(potentialPosition);
@@ -274,11 +259,12 @@ public abstract class MovableObject {
 					}catch(BoardComponentNotFoundException bcnfe){
 						System.err.println(bcnfe.getMessage());
 					}	
-				}
-			}
-		}
+				}//if( !blockedPath)
+			}//for(MoveManager move : path)
+		}//for(ArrayList<MoveManager> path : mm)
 		return legalMoves;
 	}
+	
 	@Override
 	public String toString() {
 		return "MovableObject [combatValue=" + combatValue + ", player="

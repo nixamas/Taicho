@@ -1,5 +1,12 @@
 package enums;
 
+/**
+ * Not important to game functionality but used to display icons instead of shapes
+ * Each enum corresponds to a icon that will be used. The location field stores the full directory path of the image
+ * and the name member obviously stores the name. 
+ * @author Ryan
+ *
+ */
 public enum ComponentImages {
 	LEVEL_ONE_IMAGE("images/", "levelOneImage.jpg"), 
 	LEVEL_TWO_IMAGE("images/", "levelTwoImage.jpg"), 

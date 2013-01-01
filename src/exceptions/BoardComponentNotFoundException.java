@@ -1,5 +1,11 @@
 package exceptions;
 
+/**
+ * Exception that is thrown when a BC is not found. 
+ * Can be ignored, best if used with try/catch
+ * @author Ryan
+ *
+ */
 public class BoardComponentNotFoundException extends RuntimeException {
 
 	/**
@@ -9,6 +15,6 @@ public class BoardComponentNotFoundException extends RuntimeException {
 	
 	public String getMessage(){
 		return "BOARD COMPONENT NOT FOUND EXCEPTION";
-	}
+	}//getMessage()
 
-}
+}//BoardComponentNotFoundException

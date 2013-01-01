@@ -10,6 +10,10 @@ import enums.Player;
 import enums.Ranks;
 import enums.TaichoColors;
 
+/**
+ * reference basecomponents/MovableObject.java for more information
+ * @author Ryan
+ */
 public class ThreeUnit extends MovableObject {
 
 	List<MovableObject> components;
@@ -78,11 +82,4 @@ public class ThreeUnit extends MovableObject {
 			//remove last unit in array from list
 		return this.components.remove( this.components.size() - 1 );
 	}
-	
-//	@Override
-//	public ArrayList<ObjectMove> getPossibleMoves(ObjectData board, BoardComponent bc) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
 }

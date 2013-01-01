@@ -10,7 +10,23 @@ package interfaces;
  *
  */
 public interface MoveManager {
+	
+	/**
+	 * retuns an array of the values 
+	 * @return
+	 */
 	public Object[] getMoves();
+	
+	/**
+	 * get move at that position in the array
+	 * @param i
+	 * @return
+	 */
 	public int getMove(int i);
+	
+	/**
+	 * Returns the numerical value (+/-'X) of the move '
+	 * @return
+	 */
 	public int getNumVal();
 }

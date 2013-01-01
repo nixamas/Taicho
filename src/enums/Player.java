@@ -1,9 +1,12 @@
 package enums;
 
-
-
 import java.awt.Color;
 
+/**
+ * Enum for all possible players of the game
+ * @author Ryan
+ *
+ */
 public enum Player {
 	NONE{
 		Color color = Color.WHITE;

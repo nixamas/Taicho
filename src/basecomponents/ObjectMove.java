@@ -2,6 +2,8 @@ package basecomponents;
 
 /**
  * class containing a start and finish coordinate
+ * 
+ * Not is if this is actually used anywhere. 
  * @author Ryan
  *
  */

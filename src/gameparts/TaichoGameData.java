@@ -30,21 +30,24 @@ public class TaichoGameData {
 
 	/**
 	 * Constructor. Create the board and set it up for a new game.
+	 * Initialize the two players and create a 9*15 playing board
 	 */
 	public TaichoGameData(Player p1, Player p2) {
 		System.out.println("ObjectData constructor");
 		player1 = p1;
 		player2 = p2;
-		board = new BoardComponent[9][15]; //[row][col]
+		board = new BoardComponent[9][15];
 		setUpGame();
-	}
+	}//TaichoGameData
 
 	/**
-	 * Set up the board with checkers in position for the beginning of a game.
-	 * Note that checkers can only be found in squares that satisfy row % 2 ==
-	 * col % 2. At the start of the game, all such squares in the first three
-	 * rows contain black squares and all such squares in the last three rows
-	 * contain red squares.
+	 * Set up the board with characters in position for the beginning of a game.
+	 * See docs/board.xls for layout of board.
+	 * 
+	 * Based on column and row values it creates the Taicho game board with each 
+	 * game position being populated by a BoardComponent Object. (The BoardComponent[BC] object 
+	 * contains data for the state of each position (occupied?, Location, color, etc...) 
+	 * 
 	 */
 	public void setUpGame() {
 		System.out.println("Set Up Game");
@@ -96,7 +99,8 @@ public class TaichoGameData {
 	} // end setUpGame()
 
 	/**
-	 * Return the contents of the square in the specified row and column.
+	 * Return the BC of the square in the specified row and column.
+	 * If row or column are out of bounds a 'BoardComponentNotFoundException' is thrown
 	 */
 	public BoardComponent pieceAt(int row, int col) {
 		if(row > 8 || col > 14){
@@ -104,14 +108,18 @@ public class TaichoGameData {
 		}else{
 			return board[row][col];
 		}
-		
 	}
 	
+	/**
+	 * Returns the Coordinate object of the BC found to have the 
+	 * same id as the @param
+	 * @param id
+	 * @return
+	 */
 	public Coordinate getCoordinateOfId(int id){
 		for (int col = 0; col < 15; col++) {
 			for (int row = 0; row < 9; row++) {
 				if(board[row][col].getCoordinate().getId() == id){
-//					System.out.println("found coordinate of id - " + id + " at " + board[row][col].getCoordinate());
 					return board[row][col].getCoordinate();
 				}
 			}
@@ -119,6 +127,12 @@ public class TaichoGameData {
 		return new Coordinate();//new BoardComponent(null, null);
 	}
 	
+	/**
+	 * Returns the BC object of the BC found to have the 
+	 * same id as the @param
+	 * @param id
+	 * @return
+	 */
 	public BoardComponent getBoardComponentAtId(int id) {
 		for (int col = 0; col < 15; col++) {
 			for (int row = 0; row < 9; row++) {
@@ -132,6 +146,13 @@ public class TaichoGameData {
 		throw new BoardComponentNotFoundException();
 	}
 	
+	/**
+	 * Returns the single BC on the board that has its selected member set to true.
+	 * If one is not found then throw a BoardComponentNotFoundException is thrown
+	 * same id as the @param
+	 * @param id
+	 * @return
+	 */
 	public BoardComponent getSelectedBoardComponent(){
 		for (int col = 0; col < 15; col++) {
 			for (int row = 0; row < 9; row++) {
@@ -143,19 +164,37 @@ public class TaichoGameData {
 		throw new BoardComponentNotFoundException();
 	}
 	
+	/**
+	 * This method is used to makes sure that moves do not wrap around the board. 
+	 * It makes sure that selectedBc and potentialBc are within the buffer zone for the appropriate chracter
+	 * Returns true if potentialBc.row is within +/-bufferZone of selectedBc.row && 
+	 * 		potentialBc.col is within +/-bufferZone of selectedBc.col 
+	 * 
+	 * The buffer zone is the maximum number of rows/cols that an object can move for its designated Rank
+	 * lvl1 bufferZone - 1
+	 * lvl2 bufferZone - 2
+	 * lvl3 bufferZone - 3
+	 * @param bufferZone
+	 * @param selectedBc
+	 * @param potentialBc
+	 * @return
+	 */
 	public boolean isWithinBufferZone(int bufferZone, BoardComponent selectedBc, BoardComponent potentialBc){
 		Coordinate selectedCoor = selectedBc.getCoordinate();
 		Coordinate potentialCoor = potentialBc.getCoordinate();
 		if( (( potentialCoor.getPosY() <= (selectedCoor.getPosY() + bufferZone) ) && ( potentialCoor.getPosY() >= (selectedCoor.getPosY() - bufferZone))) &&
 				(( potentialCoor.getPosX() <= (selectedCoor.getPosX() + bufferZone) ) && ( potentialCoor.getPosX() >= (selectedCoor.getPosX() - bufferZone))) ){
-//			System.out.println(potentialCoor.toString() + " - found whithin bufferzone of - " + selectedCoor);
 			return true;
 		}else{
-//			System.err.println("WARNING: " + potentialCoor.toString() + " - was not found whithin bufferzone of - " + selectedCoor);
 			return false;
 		}
 	}
 	
+	/**
+	 * returns all BC's contained in the castle of player 'p'
+	 * @param p
+	 * @return
+	 */
 	public ArrayList<BoardComponent> getCastleBoardComponents(Player p){
 		ArrayList<BoardComponent> castleBc = new ArrayList<BoardComponent>();
 		for (int col = 0; col < 15; col++) {

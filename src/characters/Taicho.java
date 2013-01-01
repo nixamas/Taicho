@@ -9,6 +9,10 @@ import enums.ComponentImages;
 import enums.Player;
 import enums.Ranks;
 
+/**
+ * reference basecomponents/MovableObject.java for more information
+ * @author Ryan
+ */
 public class Taicho extends MovableObject {
 
 	public Taicho(Player p) {

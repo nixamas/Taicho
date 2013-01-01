@@ -1,5 +1,10 @@
 package enums;
 
+/**
+ * Enum listing all possible locations of the game board
+ * @author Ryan
+ *
+ */
 public enum Location {
 	GAME_BOARD{},
 	PLAYER_ONE_CASTLE{},

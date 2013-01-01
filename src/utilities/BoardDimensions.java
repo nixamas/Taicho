@@ -1,5 +1,10 @@
 package utilities;
 
+/**
+ * Convienence class that allows us to dynamically create the onscreen board in different dimensions
+ * @author Ryan
+ *
+ */
 public class BoardDimensions {
 	private final int COMPONENT_DIMENSION;
 	private final int CHARACTER_DIMENSION;

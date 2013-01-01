@@ -6,6 +6,12 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+/**
+ * Class used to draw image icons on the screen. 
+ * Only used with drawing icons, not regular boxes
+ * @author Ryan
+ *
+ */
 public class ColorPanel extends JPanel{
 	/**
 	 * 

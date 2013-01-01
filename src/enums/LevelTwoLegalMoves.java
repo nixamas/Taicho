@@ -4,6 +4,11 @@ import interfaces.MoveManager;
 
 import java.util.ArrayList;
 
+/**
+ * Legal move values for lvl2 ranked characters
+ * @author Ryan
+ *
+ */
 public enum LevelTwoLegalMoves implements MoveManager{
 	MOVE_ONE(2), MOVE_TWO(18), MOVE_THREE(1), MOVE_FOUR(9),
 		MOVE_FIVE(-2), MOVE_SIX(-18), MOVE_SEVEN(-1), MOVE_EIGHT(-9);

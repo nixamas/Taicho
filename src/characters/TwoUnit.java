@@ -10,6 +10,10 @@ import enums.Player;
 import enums.Ranks;
 import enums.TaichoColors;
 
+/**
+ * reference basecomponents/MovableObject.java for more information
+ * @author Ryan
+ */
 public class TwoUnit extends MovableObject {
 
 	List<MovableObject> components;
@@ -45,11 +49,4 @@ public class TwoUnit extends MovableObject {
 		}
 //		return Utils.blendColor(this.getPlayer().getColor(), Color.GRAY, 0.4);// (, 70);
 	}
-
-//	@Override
-//	public ArrayList<ObjectMove> getPossibleMoves(ObjectData board, BoardComponent bc) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-
 }

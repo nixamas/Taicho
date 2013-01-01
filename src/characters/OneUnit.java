@@ -8,6 +8,10 @@ import enums.Player;
 import enums.Ranks;
 import enums.TaichoColors;
 
+/**
+ * reference basecomponents/MovableObject.java for more information
+ * @author Ryan
+ */
 public class OneUnit extends MovableObject {
 	
 	public OneUnit(Player p) {
@@ -24,17 +28,5 @@ public class OneUnit extends MovableObject {
 			return Color.WHITE;
 		}
 	}
-
-//	@Override
-//	public ArrayList<ObjectMove> getPossibleMoves(ObjectData board, BoardComponent bc) {
-//		ArrayList<ObjectMove> moves = new ArrayList<ObjectMove>();
-//		
-//		for(int row = 0; row < 9; row++){
-//			for(int col = 0; col < 15; col++){
-//				
-//			}
-//		}
-//		return moves;
-//	}
 
 }
