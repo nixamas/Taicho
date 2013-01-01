@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import utilities.Utils;
 import basecomponents.MovableObject;
 import enums.ComponentImages;
 import enums.Player;
@@ -27,7 +26,7 @@ public class TwoUnit extends MovableObject {
 	}
 	
 	public ArrayList<MovableObject> getComponents(){
-		return (ArrayList) this.components;
+		return (ArrayList<MovableObject>) this.components;
 	}
 	
 	public MovableObject removeUnitFromStack(){

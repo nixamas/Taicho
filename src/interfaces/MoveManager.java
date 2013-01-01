@@ -1,5 +1,6 @@
 package interfaces;
 
+
 /**
  * This class is implemented by the different legal move enums 
  * 			(LevelOneLegalMoves.java, LevelTwoLegalMoves.java, LevelThreeLegalMoves.java)
@@ -11,4 +12,5 @@ package interfaces;
 public interface MoveManager {
 	public Object[] getMoves();
 	public int getMove(int i);
+	public int getNumVal();
 }

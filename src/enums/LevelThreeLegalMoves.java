@@ -1,5 +1,7 @@
 package enums;
 
+import java.util.ArrayList;
+
 import interfaces.MoveManager;
 
 public enum LevelThreeLegalMoves implements MoveManager {
@@ -29,5 +31,43 @@ public enum LevelThreeLegalMoves implements MoveManager {
     
 	public static int getBufferValue() {
 		return 3;
+	}
+	
+	/**
+	 * +8,+16,+24 --> M6,M3,M2
+	 * -10,-20,-30  --> M11,M10,M7
+	 * -8,-16,-24 --> M12,M9,M8
+	 * +10,+20,+30  --> M5,M4,M1
+	 */
+	public static ArrayList<ArrayList<MoveManager>> getBlockablePathsOfMoves(){
+		ArrayList<ArrayList<MoveManager>> moves = new ArrayList<ArrayList<MoveManager>>();
+		for(int i = 0; i < 4; i++){
+			moves.add(new ArrayList<MoveManager>());
+			switch(i){
+				case 0:
+					moves.get(i).add(MOVE_SIX);
+					moves.get(i).add(MOVE_THREE);
+					moves.get(i).add(MOVE_TWO);
+					break;
+				case 1:
+					moves.get(i).add(MOVE_ELEVEN);
+					moves.get(i).add(MOVE_TEN);
+					moves.get(i).add(MOVE_SEVEN);
+					break;
+				case 2:
+					moves.get(i).add(MOVE_TWELVE);
+					moves.get(i).add(MOVE_NINE);
+					moves.get(i).add(MOVE_EIGHT);
+					break;
+				case 3:
+					moves.get(i).add(MOVE_FIVE);
+					moves.get(i).add(MOVE_FOUR);
+					moves.get(i).add(MOVE_ONE);
+					break;
+				default:
+					break;
+			}
+		}
+		return moves;
 	}
 }

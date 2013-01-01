@@ -49,5 +49,9 @@ public class BoardDimensions {
 	public int getCharacterOffset() {
 		return this.CHARACTER_OFFSET;
 	}
+
+	public int getBorderSize() {
+		return BORDER_SIZE;
+	}
 	
 }

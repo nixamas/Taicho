@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import basecomponents.BoardComponent;
 import basecomponents.Coordinate;
-import characters.Taicho;
 import characters.OneUnit;
+import characters.Taicho;
 import enums.Location;
 import enums.Player;
 import enums.TaichoColors;
@@ -169,4 +169,7 @@ public class TaichoGameData {
 		}
 		return castleBc;
 	}
+	
+	
+	
 }

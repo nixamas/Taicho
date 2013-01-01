@@ -129,9 +129,55 @@ public abstract class MovableObject {
 	
 	//	public abstract void setPlayer(Player p);
 //	public abstract Player getPlayer();
+//	public ArrayList<BoardComponent> getPossibleMoves(TaichoGameData board, BoardComponent bc){
+//		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
+//		ArrayList<MoveManager> mm = new ArrayList<MoveManager>();
+//		int bufferZone = 0;
+//		boolean isTaicho = false;
+//		switch(rank){
+//			case NONE:
+//				break;
+//			case LEVEL_ONE:
+//				bufferZone = LevelOneLegalMoves.getBufferValue();
+//				LevelOneLegalMoves[] l1moves = LevelOneLegalMoves.values();
+//				for(int i = 0; i < l1moves.length; i++){
+//					mm.add(l1moves[i]);
+//				}
+//				break;
+//			case LEVEL_TWO:
+//				bufferZone = LevelTwoLegalMoves.getBufferValue();
+//				LevelTwoLegalMoves[] l2moves = LevelTwoLegalMoves.values();
+//				for(int i = 0; i < l2moves.length; i++){
+//					mm.add(l2moves[i]);
+//				}
+//				break;
+//			case LEVEL_THREE:
+//				bufferZone = LevelThreeLegalMoves.getBufferValue();
+//				LevelThreeLegalMoves[] l3moves = LevelThreeLegalMoves.values();
+//				for(int i = 0; i < l3moves.length; i++){
+//					mm.add(l3moves[i]);
+//				}
+//				break;
+//			case TAICHO:
+//				isTaicho = true;
+//				break;
+//			default:
+//				break;
+//		}
+//		
+//		if( !isTaicho ){
+//			System.out.println("you clicked a samurai");
+//			legalMoves = getSamuraiMoves(mm, board, bc, bufferZone);
+//		}else if( isTaicho ){
+//			System.out.println("you clicked a taicho");
+//			legalMoves = getTaichoMoves(board, bc);
+//		}
+//		
+//		return legalMoves;
+//	}
 	public ArrayList<BoardComponent> getPossibleMoves(TaichoGameData board, BoardComponent bc){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
-		ArrayList<MoveManager> mm = new ArrayList<MoveManager>();
+		ArrayList<ArrayList<MoveManager>> mm = new ArrayList<ArrayList<MoveManager>>();
 		int bufferZone = 0;
 		boolean isTaicho = false;
 		switch(rank){
@@ -139,24 +185,28 @@ public abstract class MovableObject {
 				break;
 			case LEVEL_ONE:
 				bufferZone = LevelOneLegalMoves.getBufferValue();
-				LevelOneLegalMoves[] l1moves = LevelOneLegalMoves.values();
-				for(int i = 0; i < l1moves.length; i++){
-					mm.add(l1moves[i]);
-				}
+				mm = LevelOneLegalMoves.getBlockablePathsOfMoves();
+				
+//				LevelOneLegalMoves[] l1moves = LevelOneLegalMoves.values();
+//				for(int i = 0; i < l1moves.length; i++){
+//					mm.add(l1moves[i]);
+//				}
 				break;
 			case LEVEL_TWO:
 				bufferZone = LevelTwoLegalMoves.getBufferValue();
-				LevelTwoLegalMoves[] l2moves = LevelTwoLegalMoves.values();
-				for(int i = 0; i < l2moves.length; i++){
-					mm.add(l2moves[i]);
-				}
+				mm = LevelTwoLegalMoves.getBlockablePathsOfMoves();
+//				LevelTwoLegalMoves[] l2moves = LevelTwoLegalMoves.values();
+//				for(int i = 0; i < l2moves.length; i++){
+//					mm.add(l2moves[i]);
+//				}
 				break;
 			case LEVEL_THREE:
 				bufferZone = LevelThreeLegalMoves.getBufferValue();
-				LevelThreeLegalMoves[] l3moves = LevelThreeLegalMoves.values();
-				for(int i = 0; i < l3moves.length; i++){
-					mm.add(l3moves[i]);
-				}
+				mm = LevelThreeLegalMoves.getBlockablePathsOfMoves();
+//				LevelThreeLegalMoves[] l3moves = LevelThreeLegalMoves.values();
+//				for(int i = 0; i < l3moves.length; i++){
+//					mm.add(l3moves[i]);
+//				}
 				break;
 			case TAICHO:
 				isTaicho = true;
@@ -188,41 +238,47 @@ public abstract class MovableObject {
 		return legalMoves;
 	}
 	
-	private ArrayList<BoardComponent> getSamuraiMoves(ArrayList<MoveManager> mm,TaichoGameData board, BoardComponent bc, int bufferZone){
+	private ArrayList<BoardComponent> getSamuraiMoves(ArrayList<ArrayList<MoveManager>> mm,TaichoGameData board, BoardComponent bc, int bufferZone){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
-		for(int i = 0; i < mm.size(); i++){ 
-			int changeVal = mm.get(i).getMove(i);
-			try{
-				BoardComponent potentialPosition = board.getBoardComponentAtId(bc.getId() + changeVal);
-				if( board.isWithinBufferZone(bufferZone, bc, potentialPosition)){
-					if( !potentialPosition.isOccupied() && potentialPosition.getLocation() != Location.OUT_OF_BOUNDS ){
-						potentialPosition.setHighlight(true);
-						legalMoves.add(potentialPosition);
-					} else if (potentialPosition.isOccupied()){
-						if( this.rank != Ranks.LEVEL_THREE && this.rank != Ranks.TAICHO ){
-							if(potentialPosition.getCharacter().getPlayer() == bc.getCharacter().getPlayer() 
-									&& ( potentialPosition.getCharacter().getRank() != Ranks.TAICHO && potentialPosition.getCharacter().getRank() != Ranks.LEVEL_THREE)){
-								potentialPosition.setStackable(true);
+		boolean blockedPath = false;
+		for(ArrayList<MoveManager> path : mm){
+			blockedPath = false;
+			for(MoveManager move : path){
+				int changeVal = move.getNumVal();
+				if( !blockedPath ){
+					try{
+						BoardComponent potentialPosition = board.getBoardComponentAtId(bc.getId() + changeVal);
+						if( board.isWithinBufferZone(bufferZone, bc, potentialPosition)){
+							if( !potentialPosition.isOccupied() && potentialPosition.getLocation() != Location.OUT_OF_BOUNDS ){
+								potentialPosition.setHighlight(true);
 								legalMoves.add(potentialPosition);
+							} else if (potentialPosition.isOccupied()){
+								if( this.rank != Ranks.LEVEL_THREE && this.rank != Ranks.TAICHO ){
+									if(potentialPosition.getCharacter().getPlayer() == bc.getCharacter().getPlayer() 
+											&& ( potentialPosition.getCharacter().getRank() != Ranks.TAICHO && potentialPosition.getCharacter().getRank() != Ranks.LEVEL_THREE)){
+										potentialPosition.setStackable(true);
+										legalMoves.add(potentialPosition);
+									}
+								}
+								if(this.player != potentialPosition.getCharacter().getPlayer()){
+									MovableObject potentialOpponent = potentialPosition.getCharacter();
+									if(this.combatValue >= potentialOpponent.getCombatValue()){
+										System.out.println("Found a potential enemy of " + this.toString() + " at -- " + potentialPosition.getCoordinate().toString());
+										potentialPosition.setAttackable(true);
+										legalMoves.add(potentialPosition);
+									}
+								}
+								blockedPath = true;
 							}
-						}
-						if(this.player != potentialPosition.getCharacter().getPlayer()){
-							MovableObject potentialOpponent = potentialPosition.getCharacter();
-							if(this.combatValue >= potentialOpponent.getCombatValue()){
-								System.out.println("Found a potential enemy of " + this.toString() + " at -- " + potentialPosition.getCoordinate().toString());
-								potentialPosition.setAttackable(true);
-								legalMoves.add(potentialPosition);
-							}
-						}
-					}
-				}	
-			}catch(BoardComponentNotFoundException bcnfe){
-				System.err.println(bcnfe.getMessage());
-			}	
-		}//end for loop
+						}	
+					}catch(BoardComponentNotFoundException bcnfe){
+						System.err.println(bcnfe.getMessage());
+					}	
+				}
+			}
+		}
 		return legalMoves;
 	}
-
 	@Override
 	public String toString() {
 		return "MovableObject [combatValue=" + combatValue + ", player="

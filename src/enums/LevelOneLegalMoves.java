@@ -1,5 +1,7 @@
 package enums;
 
+import java.util.ArrayList;
+
 import interfaces.MoveManager;
 
 public enum LevelOneLegalMoves implements MoveManager{
@@ -15,6 +17,7 @@ public enum LevelOneLegalMoves implements MoveManager{
     public int getNumVal() {
         return numVal;
     }
+    
 
 	@Override
 	public Object[] getMoves() {
@@ -29,5 +32,16 @@ public enum LevelOneLegalMoves implements MoveManager{
 
 	public static int getBufferValue() {
 		return 1;
+	}
+	
+	public static ArrayList<ArrayList<MoveManager>> getBlockablePathsOfMoves(){
+		ArrayList<ArrayList<MoveManager>> moves = new ArrayList<ArrayList<MoveManager>>();
+		for(int i = 0; i < 8; i++){
+			//order doesnt matter here because LevelOne can only move
+				//one block in each direction
+			moves.add(new ArrayList<MoveManager>());
+			moves.get(i).add( values()[i] );
+		}
+		return moves;
 	}
 }

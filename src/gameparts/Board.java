@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 
 import net.coobird.thumbnailator.Thumbnails;
 import utilities.BoardDimensions;
-import utilities.ColorPanel;
 import utilities.Utils;
 import basecomponents.BoardComponent;
 import basecomponents.Coordinate;
@@ -83,7 +82,7 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 		}
 		
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(45);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
+		boardProperties = new BoardDimensions(27);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 		showIcons = false;								/// 		<<<<<<<<<<<<<<<<<<<< SET TRUE FOR IMAGE ICONS INSTEAD OF SHAPES
 		setBackground(Color.BLACK);
 		addMouseListener(this);
@@ -120,10 +119,9 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 		int bL = boardProperties.getBoardLength();
 		int bW = boardProperties.getBoardWidth();
 		int charOffset = boardProperties.getCharacterOffset();
-		BufferedImage tn1 = null, tn2 = null, tn3 = null, tnT = null; //lvl 1, 2, 3, and Taicho
 		
 		/* Draw a two-pixel black border around the edges of the canvas. Used as player turn indicator */
-		System.out.println("Paint components");
+		System.out.println("Painting on screen Components");
 		g.setColor(currentPlayer.getColor()); 		
 		/* Draw player indicator box around  */
 		g.drawRect(0, 0, bL - 1, bW - 1);
@@ -134,14 +132,8 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 			for (int row = 0; row < 9; row++) {
 				BoardComponent bc = board.pieceAt(row, col);
 				if (bc.getLocation() != Location.OUT_OF_BOUNDS) {
-					if( bc.isHighlight() ){
-						g.setColor(bc.getColor());
-					}else if (row % 2 == col % 2) {
-						g.setColor(bc.getColor());
-					} else {
-						g.setColor(bc.getColor());
-					}
-					
+
+					g.setColor(bc.getColor());				
 					g.fillRect(2 + col * compSize, 2 + row * compSize, compSize, compSize);
 
 					if(bc.isOccupied()){
@@ -168,7 +160,6 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 								default:
 									break;
 							}
-							int offset = ( charSize - 7 ) / 2;
 							g.drawImage(icon,  2 + charOffset + col * compSize,  2 + charOffset + row * compSize, charSize - 7, charSize - 7, null);
 						}else{
 							g.setColor(bc.getCharacter().getColor());
@@ -287,7 +278,16 @@ public class Board extends JPanel implements ActionListener, MouseListener, Imag
 			    		System.err.println(bcnfe.getMessage());
 			    	}
 				}
-			}	
+			}else{
+				try{
+		    		BoardComponent selectedBc = board.getSelectedBoardComponent();
+	    			selectedBc.setSelected(false);
+	    			eraseValidMoves();
+		    		selectedBC = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(-1, -1, -1));
+		    	}catch(BoardComponentNotFoundException bcnfe){
+		    		System.err.println(bcnfe.getMessage());
+		    	}
+			}
 		}catch(BoardComponentNotFoundException bcnfe){
 			System.err.println(bcnfe.getMessage());
 		}

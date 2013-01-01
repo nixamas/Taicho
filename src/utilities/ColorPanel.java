@@ -7,6 +7,10 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 public class ColorPanel extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	BufferedImage img;
 	
 	public ColorPanel(BufferedImage image){

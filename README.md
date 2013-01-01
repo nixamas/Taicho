@@ -2,7 +2,7 @@ Taicho
 ======
 
 'Personal' Taicho repository
-								Column(X)
+							           	Column(X)
 				 0    1   2   3   4   5   6   7   8   9   10  11  12  13 
 				              _   _   _   _   _   _   _   _
 			0	  0   10  19| _ | _ | _ | _ | _ | _ | _ | _ |            
