@@ -2,6 +2,8 @@ package enums;
 
 import interfaces.MoveManager;
 
+import java.util.ArrayList;
+
 public enum SurroundingBCMoves implements MoveManager{
 	MOVE_ONE(1), MOVE_TWO(10), MOVE_THREE(8), MOVE_FOUR(9), 
 		MOVE_FIVE(-1), MOVE_SIX(-10), MOVE_SEVEN(-8), MOVE_EIGHT(-9);
@@ -16,9 +18,25 @@ public enum SurroundingBCMoves implements MoveManager{
         return numVal;
     }
 
-	@Override
-	public Object[] getMoves() {
-		return values();
+//	@Override
+//	public ArrayList<MoveManager> getMoves() {
+//		ArrayList<MoveManager> moves;
+//		Object[] surroundingMoves = values();
+//		for(Object move : surroundingMoves){
+//			MoveManager mmMove = (MoveManager) move;
+//			moves.add(mmMove);
+//		}
+//		return moves;
+//	}
+
+	public static ArrayList<MoveManager> getMoveManagerMoves() {
+		ArrayList<MoveManager> moves = new ArrayList<MoveManager>();
+		Object[] surroundingMoves = values();
+		for(Object move : surroundingMoves){
+			MoveManager mmMove = (MoveManager) move;
+			moves.add(mmMove);
+		}
+		return moves;
 	}
 	
 	@Override
@@ -29,5 +47,10 @@ public enum SurroundingBCMoves implements MoveManager{
 
 	public static int getBufferValue() {
 		return 1;
+	}
+
+	@Override
+	public Object[] getMoves() {
+		return values();
 	}
 }

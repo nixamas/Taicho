@@ -6,9 +6,19 @@ package enums;
  *
  */
 public enum Ranks {
-		LEVEL_ONE,
-		LEVEL_TWO,
-		LEVEL_THREE,
-		TAICHO,
-		NONE;
+		LEVEL_ONE(1),
+		LEVEL_TWO(2),
+		LEVEL_THREE(3),
+		TAICHO(4),
+		NONE(0);
+		
+	    private int numVal;
+
+	    Ranks(int numVal) {
+	        this.numVal = numVal;
+	    }
+
+	    public int getNumVal() {
+	        return numVal;
+	    }
 }

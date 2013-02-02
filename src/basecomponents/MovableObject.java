@@ -12,7 +12,9 @@ import enums.LevelTwoLegalMoves;
 import enums.Location;
 import enums.Player;
 import enums.Ranks;
+import enums.SurroundingBCMoves;
 import exceptions.BoardComponentNotFoundException;
+import gameparts.Board;
 import gameparts.TaichoGameData;
 
 /**
@@ -28,7 +30,8 @@ public abstract class MovableObject {
 	protected Player player;
 	protected Ranks rank;
 	protected final ComponentImages imageLocation;
-	
+	private boolean surroundedByEnemies = false;
+
 	/**
 	 * Constructor for MovableObject sets the player, rank, and componentImages members
 	 * the combat values is set based on what ever the rank is 
@@ -116,6 +119,14 @@ public abstract class MovableObject {
 		return imageLocation;
 	}
 	
+	public boolean isSurroundedByEnemies() {
+		return surroundedByEnemies;
+	}
+
+	public void setSurroundedByEnemies(boolean surroundedByEnemies) {
+		this.surroundedByEnemies = surroundedByEnemies;
+	}
+	
 	public ArrayList<BoardComponent> getPossibleUnstackLocations(TaichoGameData board, BoardComponent bc){
 		ArrayList<BoardComponent> legalMoves = new ArrayList<BoardComponent>();
 		ArrayList<MoveManager> mm = new ArrayList<MoveManager>();
@@ -191,6 +202,34 @@ public abstract class MovableObject {
 		return legalMoves;
 	}
 	
+	private boolean canIBeKilled(TaichoGameData board, int id){
+		boolean killed = false;
+		int powerTally = 0;
+		ArrayList<MoveManager> moves = SurroundingBCMoves.getMoveManagerMoves();
+		ArrayList<BoardComponent> surroundingBoardComponents = getSurroundingBoardComponents(board, id, moves);
+		for(BoardComponent sbc : surroundingBoardComponents){
+			if(sbc.isOccupied()){
+				MovableObject character = sbc.getCharacter();
+				if(this.getPlayer() != character.getPlayer()){
+					powerTally += character.getCombatValue();
+				}
+			}
+		}
+		if(powerTally >= this.getCombatValue()){
+			killed = true;
+		}
+		return killed;
+	}
+	
+	private ArrayList<BoardComponent> getSurroundingBoardComponents(TaichoGameData board, int id, ArrayList<MoveManager> mm){
+		ArrayList<BoardComponent> surroundingBoardComponents = new ArrayList<BoardComponent>();
+		for(MoveManager move : mm){
+			int changeVal = move.getNumVal();
+			surroundingBoardComponents.add(board.getBoardComponentAtId(id + changeVal));
+		}
+		return surroundingBoardComponents;
+	}
+	
 	/**
 	 * called if the chosen object is a Taicho ranked object
 	 * returns all unoccupied BC's within the players castle area
@@ -250,6 +289,12 @@ public abstract class MovableObject {
 										//BC is a attackable position
 										System.out.println("Found a potential enemy of " + this.toString() + " at -- " + potentialPosition.getCoordinate().toString());
 										potentialPosition.setAttackable(true);
+										legalMoves.add(potentialPosition);
+									}else if( potentialOpponent.canIBeKilled(board, potentialPosition.getId() ) ){
+										//potential oppenent can be killed by using multiple samurai
+										System.out.println("A potential enemy can be killed by adding multiple samurais");
+										potentialPosition.setAttackable(true);
+										potentialOpponent.setSurroundedByEnemies(true);
 										legalMoves.add(potentialPosition);
 									}
 								}

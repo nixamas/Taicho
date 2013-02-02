@@ -487,15 +487,21 @@ public class Board extends JPanel implements ActionListener, MouseListener {
     		MovableObject oppressingCharacter = attackingBc.getCharacter();
     		if(victimCharacter != oppressingCharacter && //must be opposite players and not a 'NONE' Player
     				(victimCharacter.getPlayer() != Player.NONE && oppressingCharacter.getPlayer() != Player.NONE)){		
-    			
-    			if(oppressingCharacter.getCombatValue() >= victimCharacter.getCombatValue() && victimCharacter.getRank() != Ranks.TAICHO){
-    				System.out.println("..Bummer, you've been attacked -- " + victimBc.getCharacter().toString());
-    				victimBc.removeCharacter(); //dead
-    				victimBc.setCharacter( attackingBc.removeCharacter() );
-    				attackingBc.setSelected(false);
-    			}else{
-    				//attacking character cannot beat victim
-    				return false;
+    			if(victimBc.isAttackable()){
+	    			if(oppressingCharacter.getCombatValue() >= victimCharacter.getCombatValue() && victimCharacter.getRank() != Ranks.TAICHO){
+	    				System.out.println("...Bummer, you've been attacked -- " + victimBc.getCharacter().toString());
+	    				victimBc.removeCharacter(); //dead
+	    				victimBc.setCharacter( attackingBc.removeCharacter() );
+	    				attackingBc.setSelected(false);
+	    				return true;
+	    			}else{
+	    				//attacking character can beat victim using teammates
+	    				System.out.println("Multiple samurais are about to kill you...");
+	    				victimBc.removeCharacter();
+	    				victimBc.setCharacter( attackingBc.removeCharacter() );
+	    				attackingBc.setSelected(false);
+	    				return true;
+	    			}
     			}
     		}else{
     			//players were not right
