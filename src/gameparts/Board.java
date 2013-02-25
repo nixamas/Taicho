@@ -57,6 +57,9 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	
 	JButton unstackBtn;
 	
+//	boolean DEBUG = true;
+	boolean DEBUG = false;
+	
 	/**
 	 * Constructor. Create the buttons and label. Creates Listeners for mouse clicks and
 	 * for clicks on the buttons. Create the board and start the first game.
@@ -85,7 +88,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		showIcons = false;								/// 		<<<<<<<<<<<<<<<<<<<< SET TRUE FOR IMAGE ICONS INSTEAD OF SHAPES
 		setBackground(Color.BLACK);
 		addMouseListener(this);
-		currentPlayer = Player.NONE;
+		currentPlayer = Player.PLAYER_ONE;
 		unstackBtn = unstckBtn;
 		unstackBtn.addActionListener(this);
 		player1 = Player.PLAYER_ONE;
@@ -232,10 +235,17 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 	    	
 			if(bc.getLocation() != Location.OUT_OF_BOUNDS){	//if player clicks on the game board
 				if(validMoves.isEmpty()){		//if there is no valid moves (no BC selected)
-					System.out.println("valid moves is empty, first click");
-					selectBoardComponent(row, col);
-					currentPlayer = bc.getCharacter().getPlayer();
-					selectedBC = bc;
+					if(bc.getCharacter().getPlayer() == currentPlayer && DEBUG != true){
+						System.out.println("valid moves is empty, first click");
+						selectBoardComponent(row, col);
+						currentPlayer = bc.getCharacter().getPlayer();
+						selectedBC = bc;
+					}else if(DEBUG){
+						System.out.println("valid moves is empty, first click");
+						selectBoardComponent(row, col);
+						currentPlayer = bc.getCharacter().getPlayer();
+						selectedBC = bc;
+					}
 				}else if( !validMoves.isEmpty() && validSelection(bc) ){
 						// if there is a selected BC and user chose a valid BC
 					System.out.println("make move to new VALID square");
@@ -263,6 +273,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 					}catch(BoardComponentNotFoundException bcnfe){
 			    		System.err.println(bcnfe.getMessage());
 			    	}
+					setNextPlayerTurn();	//update current player variable
 					eraseValidMoves();
 						//set the selectedBC to some out of bounds location, keep from being null
 			    	selectedBC = new BoardComponent(Location.OUT_OF_BOUNDS, new Coordinate(-1, -1, -1));
@@ -300,6 +311,14 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		repaint();
 	}
 
+	private void setNextPlayerTurn(){
+		if(this.currentPlayer == Player.PLAYER_ONE){
+			this.currentPlayer = Player.PLAYER_TWO;
+		}else if(this.currentPlayer == Player.PLAYER_TWO){
+			this.currentPlayer = Player.PLAYER_ONE;
+		}
+	}
+	
 	/**
      * This is called by mousePressed() when a player clicks on the
      * square in the specified row and col. If this BC is a valid selection 
