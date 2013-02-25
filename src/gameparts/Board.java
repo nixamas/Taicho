@@ -84,7 +84,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 		}
 		
 		validMoves = new ArrayList<BoardComponent>();
-		boardProperties = new BoardDimensions(27);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
+		boardProperties = new BoardDimensions(45);          ///     <<<<<<<<<<<<<<<<<<<< CHANGE SCREEN SIZE
 		showIcons = false;								/// 		<<<<<<<<<<<<<<<<<<<< SET TRUE FOR IMAGE ICONS INSTEAD OF SHAPES
 		setBackground(Color.BLACK);
 		addMouseListener(this);
@@ -141,7 +141,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 					if(bc.isOccupied()){
 						if(showIcons){	//if showIcons is true then use icons, else draw boxes
 							g.setColor(bc.getCharacter().getColor());
-							g.fillRect(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
+							g.fillRect(charOffset + col * compSize, charOffset + row * compSize, charSize+charOffset-2, charSize+charOffset-2);
 
 							Ranks r = bc.getCharacter().getRank();
 							BufferedImage icon = null;
@@ -162,7 +162,7 @@ public class Board extends JPanel implements ActionListener, MouseListener {
 								default:
 									break;
 							}
-							g.drawImage(icon,  2 + charOffset + col * compSize,  2 + charOffset + row * compSize, charSize - 7, charSize - 7, null);
+							g.drawImage(icon,  2 + charOffset + col * compSize,  2 + charOffset + row * compSize, charSize, charSize, null);
 						}else{
 							g.setColor(bc.getCharacter().getColor());
 							g.fillRect(2 + charOffset + col * compSize, 2 + charOffset + row * compSize, charSize, charSize);
